@@ -67,11 +67,10 @@
    	$(document).ready(function() {
 
     //helper.saveSnap(helper.createSnap("form > input[value]"));
-    helper.saveSnap(helper.createSnapVal("form > input[value]",true));
+    helper.clearSnap();
+    helper.saveSnap(helper.createSnapVal("form > input[value]"));
+    helper.saveBaseSnap(helper.createBaseSnap("form > p"));
       $("#update").on("click", function() {
-
-        console.log("click!..");
-
         $.post("/", {
           dt: "data"
         }, function(data) {
@@ -84,18 +83,14 @@
           $('input[name="text\[contacts\]\[email\]"]').val(arrData['contacts']['email']);
           $('input[name="text\[contacts\]\[whatsapp\]"]').val(arrData['contacts']['whatsapp']);
 
-        //helper.saveSnap(helper.createSnap("form > input[value]"));
         helper.saveSnap(helper.createSnapVal("form > input[value]"));
 
-        console.log("showSnap: "); console.log(helper.showSnap());
         let diffSnap = helper.getDiffSnap(helper.getFirstSnap(), helper.getLastSnap());
 
-        console.log(diffSnap);
-        console.log(helper.getDiffHistory(helper.getFirstSnap(), helper.getLastSnap()));
-        if(diffSnap.length >0){
-          helper.createMessage(helper.getDiffHistory(helper.getFirstSnap(), helper.getLastSnap()),'mesInfo');
+        if(diffSnap.length > 0){
+          let mes="message from index.php";
+          helper.createMessage(helper.getDiffHistory(helper.getFirstSnap(), helper.getLastSnap(), helper.getBaseSnap() ),'mesInfo');
         }
-
         helper.delLastSnap();
         });
       });
@@ -108,16 +103,22 @@
  </p>
  <p>
    <form name="testForm" id="testForm" action="" target="_self" method="POST">
+     <p>Cтрана</p>
      <label for="text[address][country]"><?= $arrData['address']['country'] ?></label> <br>
      <input name="text[address][country]" type="text" value="<?= $arrData['address']['country'] ?>"/> <br>
+     <p>дом</p>
      <label for="text[address][house]"><?= $arrData['address']['house'] ?></label> <br>
      <input name="text[address][house]" type="text" value="<?= $arrData['address']['house'] ?>"/> <br>
+     <p>Имя</p>
      <label for="text[name][first]"><?= $arrData['name']['first'] ?></label> <br>
      <input name="text[name][first]" type="text" value="<?= $arrData['name']['first'] ?>"/> <br>
+     <p>Фамилия</p>
      <label for="text[name][last]"><?= $arrData['name']['last'] ?></label> <br>
      <input name="text[name][last]" type="text" value="<?= $arrData['name']['last'] ?>"/> <br>
+     <p>Почта</p>
      <label for="text[contacts][email]"><?= $arrData['contacts']['email'] ?></label> <br>
      <input name="text[contacts][email]" type="text" value="<?= $arrData['contacts']['email'] ?>"/> <br>
+     <p>телефон</p>
      <label for="text[contacts][whatsapp]"><?= $arrData['contacts']['whatsapp'] ?></label><br>
      <input name="text[contacts][whatsapp]" type="text" value="<?= $arrData['contacts']['whatsapp'] ?>"/> <br>
      <br>
