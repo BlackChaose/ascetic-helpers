@@ -40,6 +40,7 @@
  <head>
    <link rel="stylesheet" href="css/styles.css">
    <script src="js/jquery-3.4.1.js"></script>
+   <script src="js/lodash.min.js"></script>
    <script src="js/helperSnap.js"></script>
 
    <style>
@@ -55,8 +56,8 @@
    }
    #mesInfo{
      display: none;
+     border-radius: 8px;
      background-color: lightgray;
-     box-shadow: 2px 2px yellow;
    }
    </style>
 
@@ -64,20 +65,38 @@
  <body>
    <script>
    	$(document).ready(function() {
+
+    //helper.saveSnap(helper.createSnap("form > input[value]"));
+    helper.saveSnap(helper.createSnapVal("form > input[value]",true));
       $("#update").on("click", function() {
+
         console.log("click!..");
+
         $.post("/", {
           dt: "data"
         }, function(data) {
           let arrData = [];
           arrData = JSON.parse(data);
-          console.warn(arrData['address']['house']);
           $('input[name="text\[address\]\[country\]"]').val(arrData['address']['country']);
           $('input[name="text\[address\]\[house\]"]').val(arrData['address']['house']);
           $('input[name="text\[name\]\[first\]"]').val(arrData['name']['first']);
           $('input[name="text\[name\]\[last\]"]').val(arrData['name']['last']);
           $('input[name="text\[contacts\]\[email\]"]').val(arrData['contacts']['email']);
           $('input[name="text\[contacts\]\[whatsapp\]"]').val(arrData['contacts']['whatsapp']);
+
+        //helper.saveSnap(helper.createSnap("form > input[value]"));
+        helper.saveSnap(helper.createSnapVal("form > input[value]"));
+
+        console.log("showSnap: "); console.log(helper.showSnap());
+        let diffSnap = helper.getDiffSnap(helper.getFirstSnap(), helper.getLastSnap());
+
+        console.log(diffSnap);
+        console.log(helper.getDiffHistory(helper.getFirstSnap(), helper.getLastSnap()));
+        if(diffSnap.length >0){
+          helper.createMessage(helper.getDiffHistory(helper.getFirstSnap(), helper.getLastSnap()),'mesInfo');
+        }
+
+        helper.delLastSnap();
         });
       });
     });
