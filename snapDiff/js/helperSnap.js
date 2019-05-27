@@ -74,6 +74,7 @@ var helper = function() {
     return arrSnaps.pop();
   }
   const clearSnap = function() {
+    _.remove(arrBaseSnap);
     return _.remove(arrSnaps);
   }
 
