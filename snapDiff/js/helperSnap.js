@@ -1,4 +1,11 @@
-var helper = function() {
+/**
+*required lodash
+*a set of helper methods for tracking form changes
+*by Nikita Kalitin
+*e-mail: nikita.s.kalitin@gmail.com  2019
+*github: https://github.com/BlackChaose/ascetic-helpers
+*/
+;var helper = function() {
 
   let arrSnaps = [];
   let arrBaseSnap = [];
