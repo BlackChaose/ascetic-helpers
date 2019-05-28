@@ -94,7 +94,7 @@
 
         if(diffSnap.length > 0){
           let mes="message from index.php";
-          helper.createMessage(helper.getDiffHistory(helper.getFirstSnap(), helper.getLastSnap(), helper.getBaseSnap() ),'mesInfo');
+          helper.createMessage(helper.getDiffHistory(helper.getFirstSnap(), helper.getLastSnap(), helper.getBaseSnap() ),'mesInfo','log');
         }
         helper.specifyModifiedInputs();
         helper.delLastSnap();

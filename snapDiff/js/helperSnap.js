@@ -1,9 +1,8 @@
 /**
 *required lodash
 *a set of helper methods for tracking form changes
-*by Nikita Kalitin
-*e-mail: nikita.s.kalitin@gmail.com  2019
-*github: https://github.com/BlackChaose/ascetic-helpers
+*by Nikita Kalitin, 2019
+*e-mail: nikita.s.kalitin@gmail.com
 */
 ;var helper = function() {
 
@@ -88,7 +87,7 @@
     return _.remove(arrSnaps);
   }
 
-  const createMessage = function(arrMsgs, objId) {
+  const createMessage = function(arrMsgs, objId, headTitle) {
     let obj = document.getElementById(objId);
     let child = obj.lastElementChild;
     while (child) {
@@ -105,7 +104,7 @@
 
     let header = document.createElement('p');
     header.style = 'color: black; font-size: larger; font-weight: bolder; font-family: serif;';
-    header.textContent = 'лог изменений';
+    header.textContent = headTitle;
     msg.append(header);
 
     let msg_ul = document.createElement('ul');
