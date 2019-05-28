@@ -59,6 +59,11 @@
      border-radius: 8px;
      background-color: lightgray;
    }
+   label {
+     max-width: 30%;
+     font-family: monospace;
+     font-size: medium;
+   }
    </style>
 
  </head>
@@ -91,8 +96,10 @@
           let mes="message from index.php";
           helper.createMessage(helper.getDiffHistory(helper.getFirstSnap(), helper.getLastSnap(), helper.getBaseSnap() ),'mesInfo');
         }
+        helper.specifyModifiedInputs();
         helper.delLastSnap();
         });
+
       });
     });
    </script>

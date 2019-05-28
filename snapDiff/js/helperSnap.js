@@ -3,7 +3,8 @@ var helper = function() {
   let arrSnaps = [];
   let arrBaseSnap = [];
   let messagesFlag = false;
-
+  let indexes = [];
+  let baseSnapSelector='';
   const getFlatArr = function(selector = "form > table  input[value]") {
     return _.flatMapDepth(document.querySelectorAll(selector), function(x) {
       return x;
@@ -28,6 +29,7 @@ var helper = function() {
   }
 
   const createBaseSnap = function(selector) {
+    baseSnapSelector = selector;
     return getFlatArrCon(selector);
   }
 
@@ -75,6 +77,7 @@ var helper = function() {
   }
   const clearSnap = function() {
     _.remove(arrBaseSnap);
+    _.remove(indexes);
     return _.remove(arrSnaps);
   }
 
@@ -123,9 +126,18 @@ var helper = function() {
     for (let i = 0; i < lastSnap.length; i++) {
       if (firstSnap[i] !== lastSnap[i]) {
         res.push(baseSnap[i] + " : " + firstSnap[i] + " ==> " + lastSnap[i]);
+        indexes.push(i);
       }
     };
     return res;
+  }
+
+  const specifyModifiedInputs = function(){
+    let inputs = document.querySelectorAll(baseSnapSelector);
+    _.each(indexes,function(el){
+      inputs[el].style='font-size: larger; font-weight: bolder; font-family: monospace; color: blue;';
+    });
+    return 0;
   }
 
   return {
@@ -148,5 +160,6 @@ var helper = function() {
     "createMessage": createMessage,
     "getDiffSnap": getDiffSnap,
     "getDiffHistory": getDiffHistory,
+    "specifyModifiedInputs": specifyModifiedInputs,
   }
 }();
