@@ -110,7 +110,7 @@
     let msg_ul = document.createElement('ul');
     arrMsgs.map(function(el) {
       let li = document.createElement('li');
-      li.textContent = el;
+      li.innerHTML = el;
       msg_ul.append(li);
       return li;
     });
@@ -129,9 +129,10 @@
 
   const getDiffHistory = function(firstSnap, lastSnap, baseSnap) {
     let res = [];
-    for (let i = 0; i < lastSnap.length; i++) {
+    for (let i = 0; i < Math.max(firstSnap.length, lastSnap.length); i++) {
       if (firstSnap[i] !== lastSnap[i]) {
-        res.push(baseSnap[i] + " : " + firstSnap[i] + " ==> " + lastSnap[i]);
+        let cmpStr = helperDiff.compare(firstSnap[i],lastSnap[i]);
+        res.push(baseSnap[i] + " : " + cmpStr[0] + " ==> " + cmpStr[1]);
         indexes.push(i);
       }
     };
