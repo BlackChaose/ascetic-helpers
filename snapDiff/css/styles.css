@@ -1,1 +1,26 @@
- 
+#mesInfo{
+    display: none;
+    border-radius: 8px;
+	background-color: lightyellow;
+   }
+
+#mesInfo label {
+     max-width: 30%;
+     font-family: monospace;
+     font-size: medium;
+   }
+
+#mesInfo s.diffString{
+    color: blue;
+   }
+
+#mesInfo b.diffString{
+    color: blue;
+    background-color: coral;
+    background-color: rgba(256,127,80, 0.7);
+   } 
+	
+#mesInfo div{
+	display: block;
+	padding: 5px;
+	}
