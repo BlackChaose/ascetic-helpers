@@ -28,8 +28,8 @@ if (!empty($_POST['dt']) && $_POST['dt'] === 'data') {
         $arrData['address']['house'] = 125;
         $arrData['contacts']['whatsapp'] = '+1 ' . $arrData['contacts']['whatsapp'];
     } else {
-        $arrData['name']['first'] = 'Samuel';
-        $arrData['address']['country'] = 'United States Of China';
+        $arrData['name']['first'] = 'Daniel - Samuel';
+        $arrData['address']['country'] = 'Russian of Federation';
     }
     http_response_code(200);
     print(json_encode($arrData));

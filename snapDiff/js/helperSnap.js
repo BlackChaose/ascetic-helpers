@@ -106,10 +106,14 @@ var helper = function() {
         }
 
         if (config.graduality === 'word') {
-            arr1 = str1.split("/ |, |. |; |? |! /");
-            arr2 = str2.split("/ |, |. |; |? |! /");
+            arr1 = str1.split(/(\s)|(,)|(;)|(\?)|(!)|(\.)/g);
+            arr2 = str2.split(/(\s)|(,)|(;)|(\?)|(!)|(\.)/g);
             var maxLen = Math.max(arr1.length, arr2.length);
             var i = 0;
+            console.warn("-------------------------------");
+            console.log(arr1);
+            console.log(arr2);
+            console.warn("-------------------------------");
             for (i = 0; i < maxLen; i += 1) {
                 if (arr1[i] === arr2[i]) {
                     acc1.push(chkNull(arr1[i]));
