@@ -42,6 +42,7 @@ if (!empty($_POST['dt']) && $_POST['dt'] === 'data') {
    <link rel="stylesheet" href="css/styles.css">
    <script src="js/jquery-3.4.1.js"></script>
    <script src="js/lodash.min.js"></script>
+   <script src="js/diff_match_patch.js"></script>
    <script src="js/helperSnap.js"></script>
 
 

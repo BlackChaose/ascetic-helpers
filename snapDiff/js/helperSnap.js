@@ -74,60 +74,38 @@ var helper = function() {
 
     /**
      * compare find difference
+     * require diff_match_patch.js https://github.com/google/diff-match-patch
      * @param  {String} str1 [description]
      * @param  {String} str2 [description]
      * @return {[type]}      [description]
      */
     const compare = function(str1 = 'NULL', str2 = 'NULL') {
-        var arr1 = str1.split("");
-        var arr2 = str2.split("");
-        var index = 0;
-        var acc1 = [];
-        var acc2 = [];
-        var acc3 = [];
 
-        var maxLen = Math.max(arr1.length, arr2.length);
+
+        var dmp = new diff_match_patch();
+        var res = dmp.diff_main(str1, str2);
+        dmp.diff_cleanupSemantic(res);
+        var result = [];
+        console.log('========>');
+        console.log(res);
+        //fixme:
         var i = 0;
-        if (config.graduality === 'symbol') {
-            for (i = 0; i < maxLen; i += 1) {
-                if (arr1[i] === arr2[i]) {
-                    acc1.push(chkNull(arr1[i]));
-                    acc2.push(chkNull(arr2[i]));
-                    acc3.push(chkNull(arr1[i]));
-                } else {
-                    acc1.push('<s class="diffString">' + chkNull(arr1[i]) + "</s>");
-                    acc2.push('<b class="diffString">' + chkNull(arr2[i]) + "</b>");
-                    acc3.push('<s class="diffString">' + chkNull(arr1[i]) + '</s>');
-                    acc3.push('<b class="diffString">' + chkNull(arr2[i]) + '</b>');
-                }
+
+        for (i = 0; i < res.length; i += 1) {
+            if (res[i][0] === -1) {
+                result.push('<s class="diffString ">' + res[i][1] + '</s>');
+            } else if (res[i][0] === 1) {
+                result.push('<b class="diffString">' + res[i][1] + '</b>');
+            } else if (res[i][0] === 0) {
+                result.push(res[i][1]);
             }
 
-            var res = [acc1.join(''), acc2.join('')];
         }
-
-        if (config.graduality === 'word') {
-            arr1 = str1.split(/(\s)|(,)|(;)|(\?)|(!)|(\.)/g);
-            arr2 = str2.split(/(\s)|(,)|(;)|(\?)|(!)|(\.)/g);
-            var maxLen = Math.max(arr1.length, arr2.length);
-            var i = 0;
-            for (i = 0; i < maxLen; i += 1) {
-                if (arr1[i] === arr2[i]) {
-                    acc1.push(chkNull(arr1[i]));
-                    acc2.push(chkNull(arr2[i]));
-                    acc3.push(chkNull(arr1[i]));
-                } else {
-                    acc1.push('<s class="diffString">' + chkNull(arr1[i]) + "</s>");
-                    acc2.push('<b class="diffString">' + chkNull(arr2[i]) + "</b>");
-                    acc3.push('<s class="diffString">' + chkNull(arr1[i]) + '</s>');
-                    acc3.push('<b class="diffString">' + chkNull(arr2[i]) + '</b>');
-                }
-            }
-
-            var res = [acc1.join(''), acc2.join(''), acc3.join(' ')];
-        }
-
-
-        return res;
+        console.warn(result);
+        return [
+            [],
+            [], result.join('')
+        ];
     }
 
     /**
