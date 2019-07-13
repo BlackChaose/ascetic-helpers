@@ -3,7 +3,7 @@ ini_set('display_errors', '1');
 
 $arrData = array(
     'address' => array(
-        'country' => 'Russia',
+        'country' => 'Russian Federation',
         'city' => 'Moscow',
         'street' => 'RedStreet',
         'house' => '8',
@@ -28,7 +28,8 @@ if (!empty($_POST['dt']) && $_POST['dt'] === 'data') {
         $arrData['address']['house'] = 125;
         $arrData['contacts']['whatsapp'] = '+1 ' . $arrData['contacts']['whatsapp'];
     } else {
-        $arrData['name']['first'] = 'Samuel';
+        $arrData['name']['first'] = 'Daniel - Samuel';
+        $arrData['address']['country'] = 'Russian of Federation';
     }
     http_response_code(200);
     print(json_encode($arrData));
@@ -41,7 +42,7 @@ if (!empty($_POST['dt']) && $_POST['dt'] === 'data') {
    <link rel="stylesheet" href="css/styles.css">
    <script src="js/jquery-3.4.1.js"></script>
    <script src="js/lodash.min.js"></script>
-   <script src="js/helperDiff.js"></script>
+   <script src="js/diff_match_patch.js"></script>
    <script src="js/helperSnap.js"></script>
 
 
@@ -56,22 +57,7 @@ if (!empty($_POST['dt']) && $_POST['dt'] === 'data') {
      font-family: sans-serif;
      font-size: medium;
    }
-   #mesInfo{
-     display: none;
-     border-radius: 8px;
-     background-color: lightgray;
-   }
-   label {
-     max-width: 30%;
-     font-family: monospace;
-     font-size: medium;
-   }
-   s.diffString{
-    color: blue;
-   }
-   b.diffString{
-    color: tomato;
-   }
+
    </style>
 
  </head>
@@ -82,7 +68,7 @@ if (!empty($_POST['dt']) && $_POST['dt'] === 'data') {
     //helper.saveSnap(helper.createSnap("form > input[value]"));
     helper.clearSnap();
     helper.saveSnap(helper.createSnapVal("form > input[value]"));
-    helper.saveBaseSnap(helper.createBaseSnap("form > p"));
+    helper.saveTitleSnap(helper.createTitleSnap("form > p"));
       $("#update").on("click", function() {
         $.post("/", {
           dt: "data"
@@ -102,7 +88,8 @@ if (!empty($_POST['dt']) && $_POST['dt'] === 'data') {
 
         if(diffSnap.length > 0){
           let mes="message from index.php";
-          helper.createMessage(helper.getDiffHistory(helper.getFirstSnap(), helper.getLastSnap(), helper.getBaseSnap() ),'mesInfo','log');
+          helper.config.graduality = "word";
+          helper.createMessage(helper.getDiffHistory(helper.getFirstSnap(), helper.getLastSnap(), helper.getTitleSnap() ),'mesInfo','log');
         }
         helper.specifyModifiedInputs();
         helper.delLastSnap();
