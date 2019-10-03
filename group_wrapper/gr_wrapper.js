@@ -1,17 +1,35 @@
-var gr_wrap=function(selector){
-	var obj = document.querySelector(selector);
-	var arr = Object.keys(obj.children);
+var gr_wrap = function (selector) {
+  var obj = document.querySelector(selector)
+  var arr = []
+  console.log(obj)
+  Object.keys(obj.children).forEach(function (index) {
+    arr.push(obj.children[index])
+  })
+  //a.reduce(function(acc,item,index){return acc.push(a.filter(function(el){return (el == item)}))},[]);
 
-	//a.reduce(function(acc,item,index){return acc.push(a.filter(function(el){return (el == item)}))},[]);
+  console.log(arr)
 
-  arr.reduce(function(acc, cur, index, arr){
-       		console.log(acc,' ',cur,' ',index,' ',arr);
+  // var res = arr.reduce(function (acc, cur, index, arr) {
+  //
+  //   acc.push(arr.filter(function (el) {
+  //     return (_.isEqual(el,cur) );
+  //   }))
+  //   return acc
+  //
+  // }, [])
 
-       		if(obj.children[cur].firstChild.dataset.group == )
+  let res = _.reduce(obj.children,function(acc,item){
+    console.log(item.firstChild.dataset.group);
 
-          acc.push(obj.children[cur].firstChild);
-          return acc;
+    acc.push(_.filter(obj.children,function(el){return el.firstChild.dataset.group === item.firstChild.dataset.group }));
 
-	    }, []);
-  console.log(arr);
+    return acc;
+  }, []);
+
+  res = _.clone(_.filter(res,function(a,b){return !_.isEqual(a,b) }));
+
+  console.log(res[0]);
+  console.log(res[7]);
+  console.log(_.isEqual(res[0],res[7]));
+  console.log(res)
 }
