@@ -1,35 +1,18 @@
 var gr_wrap = function (selector) {
   var obj = document.querySelector(selector)
-  var arr = []
-  console.log(obj)
-  Object.keys(obj.children).forEach(function (index) {
-    arr.push(obj.children[index])
-  })
-  //a.reduce(function(acc,item,index){return acc.push(a.filter(function(el){return (el == item)}))},[]);
+  let res2 = _.groupBy(obj.children, function(a){return a.firstChild.dataset.group;});
+  console.log(res2);
 
-  console.log(arr)
-
-  // var res = arr.reduce(function (acc, cur, index, arr) {
-  //
-  //   acc.push(arr.filter(function (el) {
-  //     return (_.isEqual(el,cur) );
-  //   }))
-  //   return acc
-  //
-  // }, [])
-
-  let res = _.reduce(obj.children,function(acc,item){
-    console.log(item.firstChild.dataset.group);
-
-    acc.push(_.filter(obj.children,function(el){return el.firstChild.dataset.group === item.firstChild.dataset.group }));
-
-    return acc;
-  }, []);
-
-  res = _.clone(_.filter(res,function(a,b){return !_.isEqual(a,b) }));
-
-  console.log(res[0]);
-  console.log(res[7]);
-  console.log(_.isEqual(res[0],res[7]));
-  console.log(res)
+ let o2 = _.mapKeys(res2,function(el, key){
+    let domEl = document.createElement('ul');
+    console.log(key);
+    console.log(el);
+    domEl.textContent = key;
+    domEl.append(_.map(el,function(item){
+      return item.firstChild;
+    }));
+    return domEl;
+  });
+  console.log(o2);
+  obj.append(o2);
 }
