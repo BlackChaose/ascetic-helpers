@@ -1,18 +1,16 @@
 var gr_wrap = function (selector) {
   var obj = document.querySelector(selector)
   let res2 = _.groupBy(obj.children, function(a){return a.firstChild.dataset.group;});
-  console.log(res2);
-
- let o2 = _.mapKeys(res2,function(el, key){
-    let domEl = document.createElement('ul');
-    console.log(key);
-    console.log(el);
-    domEl.textContent = key;
-    domEl.append(_.map(el,function(item){
-      return item.firstChild;
-    }));
-    return domEl;
+  _.map(res2,function(el,key,res2){
+    let fdSet = document.createElement('fieldset');
+    let legend = document.createElement('legend');
+    if(key !== ""){
+      legend.textContent = key;
+    }else if(key == ""){
+      legend.textContent = 'опции:';
+    }
+    fdSet.append(legend);
+    _.map(el,function(item){ fdSet.append(item);});
+    obj.append(fdSet);
   });
-  console.log(o2);
-  obj.append(o2);
 }
