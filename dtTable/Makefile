@@ -1,11 +1,11 @@
 # Makefile
 install:
-	npm install @babel/core @babel/cli @babel/node @babel/preset-env
+	npm install 
 publish:
 	npm publish --dry-run
 lint:
 	npx eslint .
-tst:
+tst_publish:
 	make publish
 	npm link
 bundle:
@@ -15,6 +15,10 @@ instbrow:
 	npm install -g browserify
 devsrv: 
 	php -S localhost:5000 -t ./public
+test:	
+	npx jest
+test_cover:
+	npx jest --coverage
 asm:
 	npx eslint .
 	npm run build
