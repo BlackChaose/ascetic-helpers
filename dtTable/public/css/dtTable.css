@@ -1,0 +1,12 @@
+.header th {
+    background-color: #6babe3;
+}
+.even td {
+    background-color: #E0EDF3;
+}
+.odd td{
+    background-color: #b0bab3;
+}
+.select td {
+    background-color: #9ac8fc;
+}
