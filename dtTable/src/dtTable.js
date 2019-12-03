@@ -1,5 +1,7 @@
 import { _ } from 'lodash';
 
+//fixme: add pagination, search, count rows
+//todo посмотри что можно сделать с валидацией номера телефона напримера - т.е. получать инфу по кодификатору например.
 
 const sum = (a, b) => a + b;
 /* eslint-disable */
