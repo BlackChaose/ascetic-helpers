@@ -1,12 +1,33 @@
 .header th {
     background-color: #6babe3;
 }
-.even td {
-    background-color: #E0EDF3;
-}
-.odd td{
-    background-color: #b0bab3;
-}
+/*.even td {*/
+    /*background-color: #E0EDF3;*/
+/*}*/
+/*.odd td{*/
+    /*background-color: #b0bab3;*/
+/*}*/
 .select td {
     background-color: #9ac8fc;
+}
+th, td{
+    padding: 5px;
+    text-align: left;
+    border-bottom: 1px solid white;
+}
+tr:nth-child(even) {background-color: #E0EDF3;}
+tr:nth-child(odd) {background-color: #b0bab3;}
+tr:hover {background-color: #ddd; cursor: pointer;}
+
+.dtTable {
+    border-collapse: collapse;
+}
+.removeRowBtn {
+    color: tomato;
+}
+.removeRowBtn:hover {
+    color: red;
+}
+.removeRowBtn:active {
+    color: tomato;
 }

@@ -8,6 +8,9 @@ exports.runApp = exports.sum = void 0;
 
 var _lodash = require("lodash");
 
+//  fixme: add pagination, search, count rows
+//  todo посмотри что можно сделать с валидацией номера телефона напримера
+//  - т.е. получать инфу по кодификатору например.
 const sum = (a, b) => a + b;
 /* eslint-disable */
 
@@ -15,13 +18,11 @@ const sum = (a, b) => a + b;
 exports.sum = sum;
 
 const buildRow = (parentObj, oneRowObjects, tag) => {
-  console.log(typeof parentObj, parentObj);
-  console.log(typeof oneRowObjects, oneRowObjects, _lodash._.head(oneRowObjects));
   const row = document.createElement('tr');
 
   _lodash._.reduce(oneRowObjects, (acc, el) => {
-    const cell = document.createElement(tag);
-    console.log(el);
+    const cell = document.createElement(tag); //console.log(el);
+
     cell.textContent = el;
     acc.append(cell);
     return acc;
@@ -41,19 +42,81 @@ const isOdd = num => {
   return num % 2;
 };
 
+const addRemoveRowCell = obj => {
+  let colRemove = document.createElement('td');
+  colRemove.className = 'removeRowBtn';
+  let buttonRemove = document.createElement('i');
+  buttonRemove.className = "fa fa-remove";
+  colRemove.append(buttonRemove);
+  obj.append(colRemove);
+  return obj;
+};
+
+const addRemoveRowHeaderCell = obj => {
+  let colRemove = document.createElement('th');
+  let buttonRemove = document.createElement('i');
+  buttonRemove.className = "fa fa-remove";
+  colRemove.append(buttonRemove);
+  obj.append(colRemove);
+  return obj;
+};
+
+const hasRemoveRowColumn = obj => obj.columnDeleteRow;
+
+const selectHandler = e => {
+  console.log(e.target);
+  console.log(e.target.parentNode);
+};
+
+const removeHandler = e => {
+  //console.log('=> ',e.target.parentElement, '=>> ', e.target.parentNode.parentNode);
+  e.target.parentNode.parentNode.parentNode.removeChild(e.target.parentNode.parentNode);
+};
+/**
+ * application
+ * @param obj
+ * @param configTable
+ * @param testData
+ * @returns {*}
+ */
+
+
 const runApp = (obj, configTable, testData) => {
   const tbl = document.createElement('table');
-  tbl.append(buildTableHeader(obj, configTable.headers[0]));
+  tbl.className = 'dtTable';
+  const header = buildTableHeader(obj, configTable.headers[0]);
+
+  if (hasRemoveRowColumn(configTable)) {
+    addRemoveRowHeaderCell(header);
+  }
+
+  tbl.append(header);
   let index = 0;
 
   _lodash._.forEach(testData, element => {
-    const row = buildRow(obj, element, 'td');
-    row.className = isOdd(index) ? 'odd' : 'even';
+    const row = buildRow(obj, element, 'td'); //row.className = (isOdd(index)) ? 'odd' : 'even';
+
+    if (hasRemoveRowColumn(configTable)) {
+      addRemoveRowCell(row);
+    }
+
     tbl.append(row);
     index += 1;
   });
 
   obj.append(tbl);
+  const rows = document.querySelectorAll('table.dtTable tr');
+
+  _lodash._.forEach(rows, element => {
+    element.addEventListener('click', selectHandler);
+  });
+
+  const removeRowButtons = document.querySelectorAll('td.removeRowBtn');
+
+  _lodash._.forEach(removeRowButtons, button => {
+    button.addEventListener('click', removeHandler);
+  });
+
   return obj;
 };
 /* eslint-enable */
@@ -209,7 +272,8 @@ let configTable = {
     "IdExpert": "ИД эксперта",
     "email": "эл. почта",
     "phone": "телефон"
-  }]
+  }],
+  "columnDeleteRow": true
 };
 (0, _dtTable.runApp)(obj, configTable, testData);
 /* eslint-enable */

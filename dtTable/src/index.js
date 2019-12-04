@@ -28,6 +28,7 @@ let configTable = {
   "orders": [{'orderCount': "ASC"}, {'FIO': "ASC"}, {'IdExpert':"ASC"}, {'email': "ASC"}, {'phone':"ASC"}],
   "rowLimit": 5,
   "headers": [{"orderCount": "Номер по порядку", "FIO": "Ф.И.О.", "IdExpert": "ИД эксперта", "email": "эл. почта", "phone": "телефон"}],
+  "columnDeleteRow": true,
 };
 
 runApp(obj, configTable, testData);
