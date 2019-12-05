@@ -19,7 +19,8 @@ exports.sum = sum;
 let stackStore = {
   "version": "1.0.0"
 };
-stackStore.count = 0;
+stackStore.currentPageNumber = 1;
+stackStore.pageRowsLimit = 10;
 
 const buildRow = (parentObj, oneRowObjects, tag) => {
   const row = document.createElement('tr');
@@ -80,16 +81,9 @@ const removeHandler = e => {
   stackStore.count = stackStore.count + 1;
   console.log('stackStore => ', stackStore);
 };
-/**
- * application
- * @param obj
- * @param configTable
- * @param testData
- * @returns {*}
- */
 
-
-const runApp = (obj, configTable, testData) => {
+const renderDtTable = (obj, configTable, tableData) => {
+  obj.removeChild(obj);
   const tbl = document.createElement('table');
   tbl.className = 'dtTable';
   const header = buildTableHeader(obj, configTable.headers[0]);
@@ -101,8 +95,8 @@ const runApp = (obj, configTable, testData) => {
   tbl.append(header);
   let index = 0;
 
-  _lodash._.forEach(testData, element => {
-    const row = buildRow(obj, element, 'td'); //row.className = (isOdd(index)) ? 'odd' : 'even';
+  _lodash._.forEach(tableData, element => {
+    const row = buildRow(obj, element, 'td');
 
     if (hasRemoveRowColumn(configTable)) {
       addRemoveRowCell(row);
@@ -113,12 +107,6 @@ const runApp = (obj, configTable, testData) => {
   });
 
   obj.append(tbl);
-  /**
-   * !!!
-   */
-
-  stackStore.inputData = testData; // fixme - clone or copy obj!!!!  - todo
-
   const rows = document.querySelectorAll('table.dtTable tr');
 
   _lodash._.forEach(rows, element => {
@@ -132,6 +120,28 @@ const runApp = (obj, configTable, testData) => {
   });
 
   return obj;
+};
+/**
+ * application
+ * @param obj
+ * @param configTable
+ * @param testData
+ * @returns {*}
+ */
+
+
+const runApp = (obj, configTable, tableData) => {
+  /**
+   * !!!
+   */
+  stackStore.inputData = tableData; // fixme - clone or copy obj!!!!  - todo
+
+  if (tableData.rowLimit) {
+    stackStore.pageRowsLimit = tableData.rowLimit;
+  }
+
+  renderDtTable(obj, configTable, tableData);
+  return renderDtTable(obj, configTable, tableData);
 };
 /* eslint-enable */
 
