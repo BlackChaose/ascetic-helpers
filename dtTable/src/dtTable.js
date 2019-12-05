@@ -71,7 +71,7 @@ const removeHandler = (e) => {
 };
 
 const renderDtTable = (obj, configTable, tableData) => {
-  obj.removeChild(obj);
+  //obj.removeChild(obj);
   const tbl = document.createElement('table');
 
   tbl.className = 'dtTable';
