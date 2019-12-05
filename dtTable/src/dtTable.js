@@ -1,11 +1,15 @@
 import { _ } from 'lodash';
 
+
 //  fixme: add pagination, search, count rows
 //  todo посмотри что можно сделать с валидацией номера телефона напримера
 //  - т.е. получать инфу по кодификатору например.
 
 const sum = (a, b) => a + b;
 /* eslint-disable */
+let stackStore = {"version": "1.0.0"};
+stackStore.count = 0;
+
 const buildRow = (parentObj, oneRowObjects, tag) => {
   const row = document.createElement('tr');
   _.reduce(oneRowObjects, (acc, el) => {
@@ -49,16 +53,20 @@ const addRemoveRowHeaderCell = (obj) => {
 const hasRemoveRowColumn = (obj) => obj.columnDeleteRow;
 
 const selectHandler = (e) => {
-  console.log(e.target);
-  console.log(e.target.parentNode);
+  console.log('event.currentTarget =>', e.currentTarget);
 };
 
 const removeHandler = (e) => {
+
   //console.log('=> ',e.target.parentElement, '=>> ', e.target.parentNode.parentNode);
-  e.target.parentNode.parentNode.parentNode.removeChild(e.target.parentNode.parentNode);
+  e.currentTarget.parentNode.parentNode.removeChild(e.currentTarget.parentNode);
   // fixme: add stack for store removed mail-lists
   // fixme: add stack for store final list of rows ( and check it befor send)
   // fixme: add this two stascks to configTable - for store data
+
+  stackStore.count = stackStore.count + 1;
+  console.log('stackStore => ', stackStore);
+
 };
 
 /**
@@ -69,15 +77,14 @@ const removeHandler = (e) => {
  * @returns {*}
  */
 const runApp = (obj, configTable, testData) => {
-
   const tbl = document.createElement('table');
-
 
   tbl.className = 'dtTable';
   const header = buildTableHeader(obj, configTable.headers[0]);
   if(hasRemoveRowColumn(configTable)){
     addRemoveRowHeaderCell(header);
   }
+
   tbl.append(header);
 
 
@@ -93,6 +100,11 @@ const runApp = (obj, configTable, testData) => {
   });
   obj.append(tbl);
 
+  /**
+   * !!!
+   */
+  stackStore.inputData = testData; // fixme - clone or copy obj!!!!  - todo
+
   const rows = document.querySelectorAll('table.dtTable tr');
   _.forEach(rows, (element) => {
     element.addEventListener('click', selectHandler);
@@ -102,6 +114,7 @@ const runApp = (obj, configTable, testData) => {
   _.forEach(removeRowButtons, (button) => {
     button.addEventListener('click', removeHandler);
   });
+
   return obj;
 };
 /* eslint-enable */

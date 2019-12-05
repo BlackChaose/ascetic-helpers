@@ -16,6 +16,10 @@ const sum = (a, b) => a + b;
 
 
 exports.sum = sum;
+let stackStore = {
+  "version": "1.0.0"
+};
+stackStore.count = 0;
 
 const buildRow = (parentObj, oneRowObjects, tag) => {
   const row = document.createElement('tr');
@@ -64,13 +68,17 @@ const addRemoveRowHeaderCell = obj => {
 const hasRemoveRowColumn = obj => obj.columnDeleteRow;
 
 const selectHandler = e => {
-  console.log(e.target);
-  console.log(e.target.parentNode);
+  console.log('event.currentTarget =>', e.currentTarget);
 };
 
 const removeHandler = e => {
   //console.log('=> ',e.target.parentElement, '=>> ', e.target.parentNode.parentNode);
-  e.target.parentNode.parentNode.parentNode.removeChild(e.target.parentNode.parentNode);
+  e.currentTarget.parentNode.parentNode.removeChild(e.currentTarget.parentNode); // fixme: add stack for store removed mail-lists
+  // fixme: add stack for store final list of rows ( and check it befor send)
+  // fixme: add this two stascks to configTable - for store data
+
+  stackStore.count = stackStore.count + 1;
+  console.log('stackStore => ', stackStore);
 };
 /**
  * application
@@ -105,6 +113,12 @@ const runApp = (obj, configTable, testData) => {
   });
 
   obj.append(tbl);
+  /**
+   * !!!
+   */
+
+  stackStore.inputData = testData; // fixme - clone or copy obj!!!!  - todo
+
   const rows = document.querySelectorAll('table.dtTable tr');
 
   _lodash._.forEach(rows, element => {
