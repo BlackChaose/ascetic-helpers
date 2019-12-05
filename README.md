@@ -1,9 +1,12 @@
 # ascetic-helpers
 __my helpers lib__
 
-## helperSnap ##
-* for create snaps by selectors
-* for show diff's
+*	CountSymbols - symbols counter
+*	dtTable - javascript datatable
+*	group_wrapper - ? //fixme
+*	jpegToPdf - convert some images to sinlge pdf (A4)
+* 	snapDiff - create snaps by selectors
+
 
 
 
