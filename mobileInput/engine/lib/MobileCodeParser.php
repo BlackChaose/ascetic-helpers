@@ -54,6 +54,7 @@ class MobileCodeParser
             echo "--->";
             print_r ($x->count());
             echo "</pre>";
+            //fixme: NotWork!!!!
             for ($i = 0; $i < $x->count(); $i++) {
                 array_push($result, []);
                 $y = $x->item($i)->getElementsByTagName('img');
