@@ -1,0 +1,6 @@
+dist/
+assets/
+public/
+tests/
+__tests__/
+vendor/
