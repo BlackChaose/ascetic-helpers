@@ -87,7 +87,7 @@ function parse_and_save(){
     }
     return $countries_and_codes;
 }
-
+//todo: js - select mobile code by country & validation // REST
 ?>
 <!DOCTYPE html>
 <html lang="ruRU">
