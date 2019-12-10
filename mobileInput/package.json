@@ -22,7 +22,8 @@
   "license": "MIT",
   "homepage": "https://github.com/BlackChaose/my_snippets#readme",
   "dependencies": {
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "select2": "4.0.12"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
