@@ -25,7 +25,11 @@ exports.default = void 0;
 
 var _lodash = require("lodash");
 
-// todo add promise!!!
+// todo add render dropdown
+// todo for codes by counties with flags images (because select not work with flags);
+// todo add input with configurable mask and
+// todo validation function //html5 + html4 && IE 10/11 support;
+// todo
 const sendRequest = url => {
   /* eslint-disable */
   const xhttp = new XMLHttpRequest();
@@ -58,11 +62,44 @@ const renderLabel = obj => {
   return obj;
 };
 
+const renderDropDownList = obj => {
+  // todo release this function! fixme!!!!
+  console.log('in dropdownlist');
+  const dropDownHeader = document.createElement('span'); // eslint-disable-line
+
+  const dropDownList = document.createElement('div'); // eslint-disable-line
+
+  dropDownList.className = 'dropdown-list';
+  dropDownHeader.className = 'dropdown-header';
+  dropDownHeader.style.border = '1px solid black';
+  dropDownHeader.style.borderRadius = '4px';
+  dropDownHeader.style.cursor = 'pointer';
+  dropDownHeader.style.display = 'inline-block';
+  dropDownHeader.style.width = '60px';
+  dropDownHeader.style.height = '18px';
+  dropDownList.style.display = 'none';
+  obj.append(dropDownHeader);
+  obj.append(dropDownList);
+  dropDownHeader.addEventListener('click', () => {
+    dropDownList.style.display = dropDownList.style.display === 'block' ? 'none' : 'block';
+    return dropDownList;
+  });
+  return obj;
+};
+
+const renderInput = obj => {
+  // todo release this function! fixme!!!
+  console.log('in renderInput function!');
+  return obj;
+};
+
 const renderMobileInput = config => {
   console.log('!', config, 'version lodash: ', _lodash._.VERSION);
   sendRequest(config.url).then(obj => {
     console.log(obj);
     renderLabel(config.domObject);
+    renderDropDownList(config.domObject);
+    renderInput(config.domObject);
   }).catch(error => console.log(error));
   return 0;
 };
