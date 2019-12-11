@@ -1,53 +1,76 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 
-var _lodash = require("lodash");
+var _mobileInputComponent = _interopRequireDefault(require("./mobileInputComponent"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* eslint-disable */
 document.addEventListener('DOMContentLoaded', () => {
-  const objApp = document.getElementById('appInput');
-  const objLabel = document.createElement('label');
-  const objSelectCode = document.createElement('select');
-  const objInput = document.createElement('input');
-  const flagPrefix = 'img/flags/';
-  const codes = {};
-  var xhttp = new XMLHttpRequest();
-
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      codes.list = JSON.parse(xhttp.response);
-      console.log(codes.list);
-
-      _lodash._.forEach(codes.list.mobile_codes, el => {
-        console.warn("!::: ", el);
-        let option = document.createElement('option');
-        console.warn(el.mobile_code);
-        option.textContent = el.mobile_code;
-        console.warn(el.name_cyr);
-        option.title = el.name_cyr;
-        option.style.backgroundImage = `url(${flagPrefix}${el.flag_picture_name})`;
-        objSelectCode.append(option);
-      });
-
-      objSelectCode.className = 'select_mobile_code';
-      objLabel.for = 'select_code';
-      objLabel.textContent = ' + ';
-      objInput.type = 'tel';
-      objInput.placeholder = '000 000 00 00';
-      objInput.pattern = "[0-9]{10}";
-      objApp.append(objLabel);
-      objApp.append(objSelectCode);
-      objApp.append(objInput);
-    }
+  const config = {
+    "domObject": document.getElementById('appInput'),
+    "url": 'ajax_mobile_codes.php'
   };
-
-  xhttp.open('POST', 'ajax_mobile_codes.php', true);
-  xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xhttp.send('mobile_codes=get');
-  /* eslint-enable */
+  (0, _mobileInputComponent.default)(config);
 });
+/* eslint-enable */
 
-},{"lodash":2}],2:[function(require,module,exports){
+},{"./mobileInputComponent":2}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _lodash = require("lodash");
+
+// todo add promise!!!
+const sendRequest = url => {
+  /* eslint-disable */
+  const xhttp = new XMLHttpRequest();
+  /* eslint-enable */
+
+  const req = new Promise((resolve, reject) => {
+    xhttp.onreadystatechange = function () {
+      if (this.readyState === 4 && this.status === 200) {
+        // eslint-disable-line
+        const result = xhttp.responseText;
+        resolve(JSON.parse(result));
+      } else if (this.readyState === 4 && this.status !== 200) {
+        reject(new Error(`Error! ${this.readyState} ${this.status}`));
+      }
+    };
+
+    xhttp.open('POST', url, true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.send('mobile_codes=get');
+  });
+  return req;
+};
+
+const renderLabel = obj => {
+  const labelInput = document.createElement('label'); // eslint-disable-line
+
+  labelInput.for = obj.getElementsByTagName('input').id;
+  labelInput.textContent = ' +';
+  obj.append(labelInput);
+  return obj;
+};
+
+const renderMobileInput = config => {
+  console.log('!', config, 'version lodash: ', _lodash._.VERSION);
+  sendRequest(config.url).then(obj => {
+    console.log(obj);
+    renderLabel(config.domObject);
+  }).catch(error => console.log(error));
+  return 0;
+};
+
+var _default = renderMobileInput;
+exports.default = _default;
+
+},{"lodash":3}],3:[function(require,module,exports){
 (function (global){
 /**
  * @license

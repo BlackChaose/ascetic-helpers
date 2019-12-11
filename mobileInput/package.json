@@ -16,7 +16,8 @@
     "url": "git+https://https://github.com/BlackChaose/js_dev_boilerplate.git"
   },
   "files": [
-    "public"
+    "public",
+    "src"
   ],
   "author": "Nikita Kalitin",
   "license": "MIT",
