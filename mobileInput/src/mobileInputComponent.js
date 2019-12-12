@@ -1,4 +1,6 @@
-import { _ } from 'lodash';
+import {
+  forEach, sortBy, VERSION,
+} from 'lodash';
 
 // todo add render dropdown
 // todo for codes by counties with flags images (because select not work with flags);
@@ -33,9 +35,7 @@ const renderLabel = (obj) => {
   return obj;
 };
 
-const renderDropDownList = (obj, Flags) => {
-  // todo release this function! fixme!!!!
-  console.log('in dropdownlist');
+const renderDropDownList = (obj, SortedFlags) => {
   const dropDownHeader = document.createElement('span'); // eslint-disable-line
   const dropDownInput = document.createElement('input'); // eslint-disable-line
   const dropDownList = document.createElement('div'); // eslint-disable-line
@@ -45,14 +45,14 @@ const renderDropDownList = (obj, Flags) => {
   dropDownInput.className = 'mobile_input--dropdown-input';
 
   dropDownInput.placeholder = 'код';
+  dropDownInput.maxLength = 4;
 
   dropDownHeader.append(dropDownInput);
 
-  const ul= document.createElement('ul'); // eslint-disable-line
+  const ul = document.createElement('ul'); // eslint-disable-line
   ul.className = 'mobile_input--dropdown-ul';
 
-  const liBufs = [];
-  _.forEach(Flags.mobile_codes, (el) => {
+  forEach(SortedFlags, (el) => {
     const li = document.createElement('li'); // eslint-disable-line
     let imgFlag = document.createElement('span'); // eslint-disable-line
     let liText = document.createElement('span'); // eslint-disable-line
@@ -68,37 +68,77 @@ const renderDropDownList = (obj, Flags) => {
     li.appendChild(liText);
 
     li.title = el.name_cyr;
-
+    li.addEventListener('click', () => {
+      dropDownInput.value = liText.textContent;
+      dropDownList.style.display = (dropDownList.style.display === 'block') ? 'none' : 'block';
+    });
     ul.append(li);
-    liBufs.push(li);
   });
 
   dropDownList.append(ul);
 
+  const mobileInput = document.createElement('input'); // eslint-disable-line
+  mobileInput.className = 'mobile_input--mobile-input';
+
   obj.append(dropDownHeader);
+
+  obj.append(mobileInput);
+
   obj.append(dropDownList);
 
-  dropDownHeader.addEventListener('click', () => {
+  // dropDownHeader.addEventListener('click', () => {
+  //   dropDownList.style.display = (dropDownList.style.display === 'block') ? 'none' : 'block';
+  //   return dropDownList;
+  // });
+
+  // dropDownInput.addEventListener('input', (e) => {
+  //   e.stopPropagation();
+  //   console.log('!!! ', e.target);
+  //   console.log('value: ', e.currentTarget.value);
+  // });
+
+  dropDownInput.addEventListener('focusin', () => {
     dropDownList.style.display = (dropDownList.style.display === 'block') ? 'none' : 'block';
-    return dropDownList;
+  });
+
+  dropDownInput.addEventListener('focusout', (e) => {
+    console.log('focusout', e.target);
+    // fixme: !!! - event!
+    // dropDownList.style.display = (dropDownList.style.display === 'block') ? 'none' : 'block';
+    /* eslint-disable */
+    const searchElement = SortedFlags.filter((el) => {
+      return el.mobile_code === dropDownInput.value;
+    });
+    /* eslint-enable */
+    if (searchElement.count === 0) {
+      console.error('error!');
+    } else {
+      console.log(searchElement);
+    }
   });
   return obj;
 };
 
-const renderInput = (obj) => {
-  // todo release this function! fixme!!!
-  console.log('in renderInput function!');
-  return obj;
+const upUsedCountry = (codes, countries) => {
+  console.log(codes);
+  const upList = codes.filter((el) => countries.includes(el.name_lat));
+  const result = upList.concat(codes);
+  console.log(result);
+  return result;
+};
+
+const formatCodes = (arr) => {
+  const sortArr = sortBy(arr.mobile_codes, [(o) => o.name_cyr]);
+  return upUsedCountry(sortArr, ['Russia', 'Belarus', 'Finland', 'Kazakhstan', 'Kyrgyzstan', 'Azerbaijan', 'Armenia', 'Moldova', 'Tajikistan', 'Uzbekistan']);
 };
 
 const renderMobileInput = (config) => {
-  console.log('!', config, 'version lodash: ', _.VERSION);
+  console.log('!', config, 'version lodash: ', VERSION);
   sendRequest(config.url)
-    .then((Flags) => {
-      console.log(Flags);
+    .then((MobileCodes) => {
+      const SortedMobileCodes = formatCodes(MobileCodes);
       renderLabel(config.domObject);
-      renderDropDownList(config.domObject, Flags);
-      renderInput(config.domObject);
+      renderDropDownList(config.domObject, SortedMobileCodes);
     })
     .catch((error) => console.log(error));
   return 0;

@@ -62,9 +62,7 @@ const renderLabel = obj => {
   return obj;
 };
 
-const renderDropDownList = (obj, Flags) => {
-  // todo release this function! fixme!!!!
-  console.log('in dropdownlist');
+const renderDropDownList = (obj, SortedFlags) => {
   const dropDownHeader = document.createElement('span'); // eslint-disable-line
 
   const dropDownInput = document.createElement('input'); // eslint-disable-line
@@ -75,13 +73,12 @@ const renderDropDownList = (obj, Flags) => {
   dropDownHeader.className = 'mobile_input--dropdown-header';
   dropDownInput.className = 'mobile_input--dropdown-input';
   dropDownInput.placeholder = 'код';
+  dropDownInput.maxLength = 4;
   dropDownHeader.append(dropDownInput);
   const ul = document.createElement('ul'); // eslint-disable-line
 
   ul.className = 'mobile_input--dropdown-ul';
-  const liBufs = [];
-
-  _lodash._.forEach(Flags.mobile_codes, el => {
+  (0, _lodash.forEach)(SortedFlags, el => {
     const li = document.createElement('li'); // eslint-disable-line
 
     let imgFlag = document.createElement('span'); // eslint-disable-line
@@ -96,33 +93,69 @@ const renderDropDownList = (obj, Flags) => {
     li.appendChild(imgFlag);
     li.appendChild(liText);
     li.title = el.name_cyr;
+    li.addEventListener('click', () => {
+      dropDownInput.value = liText.textContent;
+      dropDownList.style.display = dropDownList.style.display === 'block' ? 'none' : 'block';
+    });
     ul.append(li);
-    liBufs.push(li);
   });
-
   dropDownList.append(ul);
+  const mobileInput = document.createElement('input'); // eslint-disable-line
+
+  mobileInput.className = 'mobile_input--mobile-input';
   obj.append(dropDownHeader);
-  obj.append(dropDownList);
-  dropDownHeader.addEventListener('click', () => {
+  obj.append(mobileInput);
+  obj.append(dropDownList); // dropDownHeader.addEventListener('click', () => {
+  //   dropDownList.style.display = (dropDownList.style.display === 'block') ? 'none' : 'block';
+  //   return dropDownList;
+  // });
+  // dropDownInput.addEventListener('input', (e) => {
+  //   e.stopPropagation();
+  //   console.log('!!! ', e.target);
+  //   console.log('value: ', e.currentTarget.value);
+  // });
+
+  dropDownInput.addEventListener('focusin', () => {
     dropDownList.style.display = dropDownList.style.display === 'block' ? 'none' : 'block';
-    return dropDownList;
+  });
+  dropDownInput.addEventListener('focusout', e => {
+    console.log('focusout', e.target); // dropDownList.style.display = (dropDownList.style.display === 'block') ? 'none' : 'block';
+
+    /* eslint-disable */
+
+    const searchElement = SortedFlags.filter(el => {
+      return el.mobile_code === dropDownInput.value;
+    });
+    /* eslint-enable */
+
+    if (searchElement.count === 0) {
+      console.error('error!');
+    } else {
+      console.log(searchElement);
+    }
   });
   return obj;
 };
 
-const renderInput = obj => {
-  // todo release this function! fixme!!!
-  console.log('in renderInput function!');
-  return obj;
+const upUsedCountry = (codes, countries) => {
+  console.log(codes);
+  const upList = codes.filter(el => countries.includes(el.name_lat));
+  const result = upList.concat(codes);
+  console.log(result);
+  return result;
+};
+
+const formatCodes = arr => {
+  const sortArr = (0, _lodash.sortBy)(arr.mobile_codes, [o => o.name_cyr]);
+  return upUsedCountry(sortArr, ['Russia', 'Belarus', 'Finland', 'Kazakhstan', 'Kyrgyzstan', 'Azerbaijan', 'Armenia', 'Moldova', 'Tajikistan', 'Uzbekistan']);
 };
 
 const renderMobileInput = config => {
-  console.log('!', config, 'version lodash: ', _lodash._.VERSION);
-  sendRequest(config.url).then(Flags => {
-    console.log(Flags);
+  console.log('!', config, 'version lodash: ', _lodash.VERSION);
+  sendRequest(config.url).then(MobileCodes => {
+    const SortedMobileCodes = formatCodes(MobileCodes);
     renderLabel(config.domObject);
-    renderDropDownList(config.domObject, Flags);
-    renderInput(config.domObject);
+    renderDropDownList(config.domObject, SortedMobileCodes);
   }).catch(error => console.log(error));
   return 0;
 };
