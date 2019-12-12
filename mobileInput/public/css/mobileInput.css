@@ -1,0 +1,88 @@
+.mobile_input--dropdown-list {
+    display: none;
+}
+.mobile_input--dropdown-header {
+    width: 70px;
+}
+.mobile_input--dropdown-input {
+    display: inline-block;
+    width: 70px;
+    height: 18px;
+}
+.mobile_input--dropdown-ul {
+    max-width: 60px;
+    overflow: scroll;
+    max-height: 120px;
+    overflow-x: hidden;
+    border: 1px solid grey;;
+    cursor: pointer;
+    list-style-type: none;
+    margin-left: 10px;
+    padding-left: 5px;
+    box-shadow: 5px 5px 3px lightgrey;
+
+    -webkit-animation: dropdown 500ms; /* Safari 4+ */
+    -moz-animation:    dropdown 500ms; /* Fx 5+ */
+    -o-animation:      dropdown 500ms; /* Opera 12+ */
+    animation:         dropdown 500ms; /* IE 10+, Fx 29+ */
+}
+
+.mobile_input--dropdown-imgflag {
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 15px;
+    min-height: 10px;
+}
+
+.mobile_input--dropdown-litext {
+    margin-left: 5px;
+}
+
+.mobile_input--dropdown-li {
+    font-size: 12px;
+}
+
+.mobile_input--dropdown-li:hover {
+    background-color: #6babe3;
+}
+
+.mobile_input--dropdown-ul::-webkit-scrollbar-track
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0);
+    background-color: #F5F5F5;
+
+}
+
+.mobile_input--dropdown-ul::-webkit-scrollbar
+{
+    width: 3px;
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+.mobile_input--dropdown-ul::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    background-color: #c4c4c4;
+    border: 1px solid #c4c4c4;
+}
+
+@-webkit-keyframes dropdown {
+    0%   { height: 0; }
+    100% { height: 120px; }
+}
+@-moz-keyframes dropdown {
+    0%   { height: 0; }
+    100% { height: 120px; }
+}
+@-o-keyframes dropdown {
+    0%   { height: 0; }
+    100% { height: 120px; }
+}
+@keyframes dropdown {
+    0%   { height: 0; }
+    100% { height: 120px; }
+}
+

@@ -62,22 +62,45 @@ const renderLabel = obj => {
   return obj;
 };
 
-const renderDropDownList = obj => {
+const renderDropDownList = (obj, Flags) => {
   // todo release this function! fixme!!!!
   console.log('in dropdownlist');
   const dropDownHeader = document.createElement('span'); // eslint-disable-line
 
+  const dropDownInput = document.createElement('input'); // eslint-disable-line
+
   const dropDownList = document.createElement('div'); // eslint-disable-line
 
-  dropDownList.className = 'dropdown-list';
-  dropDownHeader.className = 'dropdown-header';
-  dropDownHeader.style.border = '1px solid black';
-  dropDownHeader.style.borderRadius = '4px';
-  dropDownHeader.style.cursor = 'pointer';
-  dropDownHeader.style.display = 'inline-block';
-  dropDownHeader.style.width = '60px';
-  dropDownHeader.style.height = '18px';
-  dropDownList.style.display = 'none';
+  dropDownList.className = 'mobile_input--dropdown-list';
+  dropDownHeader.className = 'mobile_input--dropdown-header';
+  dropDownInput.className = 'mobile_input--dropdown-input';
+  dropDownInput.placeholder = 'код';
+  dropDownHeader.append(dropDownInput);
+  const ul = document.createElement('ul'); // eslint-disable-line
+
+  ul.className = 'mobile_input--dropdown-ul';
+  const liBufs = [];
+
+  _lodash._.forEach(Flags.mobile_codes, el => {
+    const li = document.createElement('li'); // eslint-disable-line
+
+    let imgFlag = document.createElement('span'); // eslint-disable-line
+
+    let liText = document.createElement('span'); // eslint-disable-line
+
+    li.className = 'mobile_input--dropdown-li';
+    imgFlag.className = 'mobile_input--dropdown-imgflag';
+    liText.className = 'mobile_input--dropdown-litext';
+    liText.textContent = el.mobile_code;
+    imgFlag.style.backgroundImage = `url(img/flags/${el.flag_picture_name})`;
+    li.appendChild(imgFlag);
+    li.appendChild(liText);
+    li.title = el.name_cyr;
+    ul.append(li);
+    liBufs.push(li);
+  });
+
+  dropDownList.append(ul);
   obj.append(dropDownHeader);
   obj.append(dropDownList);
   dropDownHeader.addEventListener('click', () => {
@@ -95,10 +118,10 @@ const renderInput = obj => {
 
 const renderMobileInput = config => {
   console.log('!', config, 'version lodash: ', _lodash._.VERSION);
-  sendRequest(config.url).then(obj => {
-    console.log(obj);
+  sendRequest(config.url).then(Flags => {
+    console.log(Flags);
     renderLabel(config.domObject);
-    renderDropDownList(config.domObject);
+    renderDropDownList(config.domObject, Flags);
     renderInput(config.domObject);
   }).catch(error => console.log(error));
   return 0;

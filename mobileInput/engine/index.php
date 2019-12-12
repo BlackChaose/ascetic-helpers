@@ -94,7 +94,7 @@ function parse_and_save(){
 <head>
     <meta charset="UTF-8">
     <title>test mobile input</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobileInput.css">
 
 </head>
 <body>
