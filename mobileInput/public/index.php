@@ -102,7 +102,7 @@ function parse_and_save(){
 <?php //print_r(parse_and_save()); ?>
 </pre>
 <hr>
-<form id="appInput">
+<form id="appInput" data-mobile-code="7" data-mobile-val="9998881010">
 
 </form>
 <script type="text/javascript" src="js/mobileInput.js"></script>

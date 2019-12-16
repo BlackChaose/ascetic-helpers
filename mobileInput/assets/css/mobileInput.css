@@ -1,19 +1,19 @@
 .mobile_input--dropdown-list {
     display: none;
-    max-width: 60px;
+    max-width: 70px;
     margin: 0px;
     padding: 0px;
 }
 .mobile_input--dropdown-header {
-    width: 50px;
+    width: 60px;
 }
 .mobile_input--dropdown-input {
     display: inline-block;
-    width: 50px;
+    width: 60px;
     height: 18px;
 }
 .mobile_input--dropdown-ul {
-    max-width: 45px;
+    max-width: 55px;
     overflow: scroll;
     max-height: 120px;
     overflow-x: hidden;

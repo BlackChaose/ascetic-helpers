@@ -46,7 +46,7 @@ const mobileFormat = (arr) => {
   return str;
 };
 
-const renderDropDownList = (obj, SortedFlags) => {
+const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCodeDefault) => {
   const dropDownHeader = document.createElement('span'); // eslint-disable-line
   const dropDownInput = document.createElement('input'); // eslint-disable-line
   const dropDownList = document.createElement('div'); // eslint-disable-line
@@ -54,10 +54,11 @@ const renderDropDownList = (obj, SortedFlags) => {
   dropDownList.className = 'mobile_input--dropdown-list';
   dropDownHeader.className = 'mobile_input--dropdown-header';
   dropDownInput.className = 'mobile_input--dropdown-input';
+  dropDownInput.name = 'country_code';
   dropDownInput.readOnly = true;
-
   dropDownInput.placeholder = 'код';
   dropDownInput.maxLength = 4;
+  dropDownInput.value = inputCountryCodeDefault;
 
   dropDownHeader.append(dropDownInput);
 
@@ -74,7 +75,8 @@ const renderDropDownList = (obj, SortedFlags) => {
 
     liText.textContent = el.mobile_code;
 
-    imgFlag.style.backgroundImage = `url(img/flags/${el.flag_picture_name})`;
+    imgFlag.style.backgroundImage = `url(../img/flags/${el.flag_picture_name})`;
+    // imgFlag.style.backgroundImage = `url(img/flags/${el.flag_picture_name})`;
 
     li.appendChild(imgFlag);
     li.appendChild(liText);
@@ -96,6 +98,9 @@ const renderDropDownList = (obj, SortedFlags) => {
   mobileInput.title = 'номер мобильного телефона';
   mobileInput.type = 'tel';
   mobileInput.required = true;
+  mobileInput.value = mobileFormat(inputMobileDefault);
+  mobileInput.name = 'Mobile';
+
   obj.append(dropDownHeader);
 
   obj.append(mobileInput);
@@ -155,7 +160,8 @@ const renderMobileInput = (config) => {
     .then((MobileCodes) => {
       const SortedMobileCodes = formatCodes(MobileCodes);
       renderLabel(config.domObject);
-      renderDropDownList(config.domObject, SortedMobileCodes);
+      renderDropDownList(config.domObject,
+        SortedMobileCodes, config.defaultMobile, config.defaultCountryCode);
     })
     .catch((error) => console.log(error));
   return 0;
