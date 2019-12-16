@@ -25,9 +25,6 @@ exports.default = void 0;
 
 var _lodash = require("lodash");
 
-// todo add render dropdown
-// todo for codes by counties with flags images (because select not work with flags);
-// todo add input with configurable mask and
 // todo validation function //html5 + html4 && IE 10/11 support;
 // todo
 const sendRequest = url => {
@@ -62,6 +59,22 @@ const renderLabel = obj => {
   return obj;
 };
 
+const mobileFormat = arr => {
+  const str = (0, _lodash.reduce)(arr, (acc, item, key) => {
+    let res = acc;
+
+    if (key === 2 || key === 5) {
+      res += item;
+      res += ' - ';
+      return res;
+    }
+
+    res += item;
+    return res;
+  }, '');
+  return str;
+};
+
 const renderDropDownList = (obj, SortedFlags) => {
   const dropDownHeader = document.createElement('span'); // eslint-disable-line
 
@@ -72,6 +85,7 @@ const renderDropDownList = (obj, SortedFlags) => {
   dropDownList.className = 'mobile_input--dropdown-list';
   dropDownHeader.className = 'mobile_input--dropdown-header';
   dropDownInput.className = 'mobile_input--dropdown-input';
+  dropDownInput.readOnly = true;
   dropDownInput.placeholder = 'код';
   dropDownInput.maxLength = 4;
   dropDownHeader.append(dropDownInput);
@@ -95,7 +109,7 @@ const renderDropDownList = (obj, SortedFlags) => {
     li.title = el.name_cyr;
     li.addEventListener('click', () => {
       dropDownInput.value = liText.textContent;
-      dropDownList.style.display = dropDownList.style.display === 'block' ? 'none' : 'block';
+      dropDownList.style.display = 'none';
     });
     ul.append(li);
   });
@@ -103,45 +117,52 @@ const renderDropDownList = (obj, SortedFlags) => {
   const mobileInput = document.createElement('input'); // eslint-disable-line
 
   mobileInput.className = 'mobile_input--mobile-input';
+  mobileInput.pattern = '\\d{3}(\\s|-)\\d{3}(\\s|-)\\d{4}';
+  mobileInput.placeholder = 'XXX-XXX-XXXX';
+  mobileInput.title = 'номер мобильного телефона';
+  mobileInput.type = 'tel';
+  mobileInput.required = true;
   obj.append(dropDownHeader);
   obj.append(mobileInput);
-  obj.append(dropDownList); // dropDownHeader.addEventListener('click', () => {
-  //   dropDownList.style.display = (dropDownList.style.display === 'block') ? 'none' : 'block';
-  //   return dropDownList;
-  // });
-  // dropDownInput.addEventListener('input', (e) => {
-  //   e.stopPropagation();
-  //   console.log('!!! ', e.target);
-  //   console.log('value: ', e.currentTarget.value);
-  // });
+  obj.append(dropDownList);
+  const keybuf = [];
+  mobileInput.addEventListener('keydown', e => {
+    if (isNaN(parseInt(e.key, 10)) && e.key !== 'Backspace' && e.key !== 'Enter') {
+      // eslint-disable-line
+      e.preventDefault();
+    }
 
-  dropDownInput.addEventListener('focusin', () => {
+    if (keybuf.length >= 10 && e.key !== 'Backspace') {
+      e.preventDefault();
+      return;
+    }
+
+    if (e.key === 'Backspace') {
+      mobileInput.value = '';
+      mobileInput.value = mobileFormat(keybuf);
+      keybuf.pop();
+      return;
+    }
+
+    mobileInput.value = '';
+    mobileInput.value = mobileFormat(keybuf);
+    keybuf.push(e.key);
+  });
+  dropDownList.addEventListener('mouseleave', () => {
+    dropDownList.style.display = 'none';
+  });
+  dropDownInput.addEventListener('click', () => {
     dropDownList.style.display = dropDownList.style.display === 'block' ? 'none' : 'block';
   });
-  dropDownInput.addEventListener('focusout', e => {
-    console.log('focusout', e.target); // dropDownList.style.display = (dropDownList.style.display === 'block') ? 'none' : 'block';
-
-    /* eslint-disable */
-
-    const searchElement = SortedFlags.filter(el => {
-      return el.mobile_code === dropDownInput.value;
-    });
-    /* eslint-enable */
-
-    if (searchElement.count === 0) {
-      console.error('error!');
-    } else {
-      console.log(searchElement);
-    }
+  mobileInput.addEventListener('focusin', () => {
+    dropDownList.style.display = 'none';
   });
   return obj;
 };
 
 const upUsedCountry = (codes, countries) => {
-  console.log(codes);
   const upList = codes.filter(el => countries.includes(el.name_lat));
   const result = upList.concat(codes);
-  console.log(result);
   return result;
 };
 
@@ -151,7 +172,6 @@ const formatCodes = arr => {
 };
 
 const renderMobileInput = config => {
-  console.log('!', config, 'version lodash: ', _lodash.VERSION);
   sendRequest(config.url).then(MobileCodes => {
     const SortedMobileCodes = formatCodes(MobileCodes);
     renderLabel(config.domObject);
