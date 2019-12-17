@@ -32,8 +32,6 @@ var _lodash = require("lodash");
 const sendRequest = url => {
   /* eslint-disable */
   const xhttp = new XMLHttpRequest();
-  /* eslint-enable */
-
   const req = new Promise((resolve, reject) => {
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
@@ -50,6 +48,7 @@ const sendRequest = url => {
     xhttp.send('mobile_codes=get');
   });
   return req;
+  /* eslint-enable */
 };
 
 const renderLabel = obj => {
