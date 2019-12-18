@@ -34,5 +34,6 @@ class Phone
     }
     static function Extract($mobileNumber){
         // fixme: add extract
+
     }
 }
