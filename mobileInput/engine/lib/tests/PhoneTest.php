@@ -7,7 +7,9 @@ final class PhoneTest extends TestCase
     public function testExtract()
     {
         $datasetOk = [
-            '' => ['-', '-'],
+//            '' => ['-', '-'],
+            /* +39 345 123 45 67 */
+            '393451234567'=> ['code'=>'39', 'mobile'=> '3451234567', 'country'=>'Italy'],
             /* +7 9*** 10 */
             '79778346185'=> ['code'=>'7', 'mobile'=> '9778346185', 'country'=>'Russia'],
             /* +49 151, 152, 155,157,159 *** 10 | 160 *** 10/11 | 162,163,170,171,172,173,174,175,176,177,178, 179 ... 10 | */
@@ -29,7 +31,13 @@ final class PhoneTest extends TestCase
             '15557774422' =>['code'=>'1', 'mobile'=> '5557774422', 'country'=>'United States']
         ];
 
-        $this->assertEquals($token, $_SESSION['_token_csm']);
+        foreach($datasetOk as $phoneNumber => $fields){
+            $this->assertEquals(Phone::Extract($phoneNumber), $fields);
+        }
+
+        foreach($datasetFail as $phoneNumber => $fields){
+            $this->assertEquals(Phone::Extract($phoneNumber), $fields);
+        }
 
     }
 

@@ -20,6 +20,8 @@ test:
 	npx jest
 test_cover:
 	npx jest --coverage
+testphp:
+	php './vendor/phpunit/phpunit/phpunit' './engine/lib/tests/PhoneTest'
 asm:
 	npx eslint .
 	npm run build
