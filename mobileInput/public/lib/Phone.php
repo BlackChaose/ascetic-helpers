@@ -32,29 +32,24 @@ class Phone
         }
 
     }
-    static function searchCode($code, $array){
-        $buf = array_filter($array, function($item) use($code){
-            if($item['mobile_code'] === $code){
-               return true;
-            };
-        return false;
-        });
-        return $buf;
-    }
 
-    static function deepSearch($mobile, $array){
-        $mobile_by_symbols = str_split($mobile);
-        print_r(['ms=>  ' => $mobile_by_symbols, ' count: ' => count(self::searchCode('3', $array))]);
-        $result = array_reduce($mobile_by_symbols, function($acc, $el) use ($array){
-            if(count(self::searchCode($el, $array)) >= 1){
-                $acc[]=$el;
-            }
-            return $acc;
-        }, []);
-        print_r(['=>  ' => $result]);
-        $code = implode('', $result);
-        print_r(['====>  ' => $code]);
-        return self::searchCode($code, $array);
+    static function searchCode($mobilNumber, $listNumbers){
+        //$arrayMobilNumber = str_split($mobilNumber);
+
+        $planeCodes = array_map(function($el){
+            return $el['mobile_code'];
+        }, $listNumbers);
+
+        $result = array_filter($planeCodes, function($el) use($mobilNumber) {
+            if(mb_ereg('^'.$el, $mobilNumber)){
+                return true;
+            };
+         return false;
+        });
+
+        print_r($result);
+
+        return $result;
     }
 
     static function Extract($mobileNumber){
@@ -68,9 +63,9 @@ class Phone
 
         $result = [];
 
-        $tmp = self::deepSearch($mobileNumber, $list);
-        print_r([$tmp, $list[0]]);
+        $tmp = self::searchCode($mobileNumber, $list);
         die;
+
         $result['code'] = $tmp['mobile_code'];
         $result['mobile'] = str_replace($result['code'], $mobileNumber,count($result['code']));
         $result['country'] = $tmp['name_lat'];
