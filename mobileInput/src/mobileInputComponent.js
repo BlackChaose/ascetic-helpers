@@ -38,7 +38,7 @@ const mobileFormat = (arr) => {
     let res = acc;
     if (key === 2 || key === 5) {
       res += item;
-      res += ' - ';
+      res += '-';
       return res;
     }
     res += item;
@@ -47,10 +47,15 @@ const mobileFormat = (arr) => {
   return str;
 };
 
-const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCodeDefault) => {
+const renderDropDownList = (obj,
+  SortedFlags,
+  inputMobileDefault,
+  inputCountryCodeDefault,
+  hiddenInputName) => {
   const dropDownHeader = document.createElement('span'); // eslint-disable-line
   const dropDownInput = document.createElement('input'); // eslint-disable-line
   const dropDownList = document.createElement('div'); // eslint-disable-line
+  const dropDownHiddenInput = document.createElement('input'); // eslint-disable-line
 
   dropDownList.className = 'mobile_input--dropdown-list';
   dropDownHeader.className = 'mobile_input--dropdown-header';
@@ -60,6 +65,9 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
   dropDownInput.placeholder = 'код';
   dropDownInput.maxLength = 4;
   dropDownInput.value = inputCountryCodeDefault;
+
+  dropDownHiddenInput.type = 'hidden';
+  dropDownHiddenInput.name = hiddenInputName;
 
   dropDownHeader.append(dropDownInput);
 
@@ -100,7 +108,7 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
   mobileInput.type = 'tel';
   mobileInput.required = true;
   mobileInput.value = mobileFormat(inputMobileDefault);
-  mobileInput.name = 'Mobile';
+  mobileInput.name = 'mobile_number';
 
   obj.append(dropDownHeader);
 
@@ -108,11 +116,20 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
 
   obj.append(dropDownList);
 
+  obj.append(dropDownHiddenInput);
 
-  const keybuf = [];
+  const HiddenInputHandler = function () {
+    dropDownHiddenInput.value = dropDownInput.value + mobileInput.value;
+    return dropDownHiddenInput.value;
+  };
+
+  const keybuf = inputMobileDefault.split('');
+  // fixme: доработать буфер - надо считывать значение
+  // по умолчанию в буфер + обработка нажатий стрелок
   mobileInput.addEventListener('keydown', (e) => {
     if (isNaN(parseInt(e.key, 10)) && e.key !== 'Backspace' && e.key !== 'Enter') { // eslint-disable-line
       e.preventDefault();
+      return;
     }
     if (keybuf.length >= 10 && e.key !== 'Backspace') {
       e.preventDefault();
@@ -124,22 +141,26 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
       keybuf.pop();
       return;
     }
-
+    console.warn('====> ', typeof (parseInt(e.key, 10)));
     mobileInput.value = '';
     mobileInput.value = mobileFormat(keybuf);
     keybuf.push(e.key);
+    HiddenInputHandler();
   });
 
   dropDownList.addEventListener('mouseleave', () => {
     dropDownList.style.display = 'none';
+    HiddenInputHandler();
   });
 
   dropDownInput.addEventListener('click', () => {
     dropDownList.style.display = (dropDownList.style.display === 'block') ? 'none' : 'block';
+    HiddenInputHandler();
   });
 
   mobileInput.addEventListener('focusin', () => {
     dropDownList.style.display = 'none';
+    HiddenInputHandler();
   });
 
   return obj;
@@ -162,7 +183,7 @@ const renderMobileInput = (config) => {
       const SortedMobileCodes = formatCodes(MobileCodes);
       renderLabel(config.domObject);
       renderDropDownList(config.domObject,
-        SortedMobileCodes, config.defaultMobile, config.defaultCountryCode);
+        SortedMobileCodes, config.defaultMobile, config.defaultCountryCode, config.hiddenInputName);
     })
     .catch((error) => console.log(error));
   return 0;

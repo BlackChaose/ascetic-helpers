@@ -12,7 +12,9 @@ class Phone
 {
 
     //todo add sanitize!
+    // sanitize without countries +8, +9
     static function sanitizeForRussia($mobileNumber){
+
         $tmp = preg_replace('/[^0-9]/', '', $mobileNumber);
         if (strlen($tmp) == 10 && substr($tmp, 0, 1) == '9') {
             return "7" . $tmp;
@@ -24,10 +26,13 @@ class Phone
                     if (substr($tmp, 0, 2) == '79') {
                         return $tmp;
                     }
+                    return $tmp;
                 }
 
-            } else {
-                return '<b style="color:red"> error: </b>' . ' ' . $mobileNumber;
+            } if (strlen($tmp) > 11 && strlen($tmp)<=13){
+                return $tmp;
+            }             else {
+                return NULL;
             }
         }
 
@@ -46,8 +51,6 @@ class Phone
             };
          return false;
         });
-
-        print_r($result);
 
         return $result;
     }
@@ -69,11 +72,9 @@ class Phone
 
         $result = [];
 
-
-        $result['code'] = self::searchCode($mobileNumber, $list)[0];
-        $result['mobile'] = mb_eregi_replace($result['code'], $result['code'], $mobileNumber);
-        $result['country'] = $list
-
+        $cd = self::searchCode($mobileNumber, $list);
+        $result['code'] = array_shift($cd);
+        $result['mobile'] = mb_eregi_replace('^'.$result['code'],'', $mobileNumber);
         return $result;
     }
 }

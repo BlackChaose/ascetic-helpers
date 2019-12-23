@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     "url": 'ajax_mobile_codes.php',
     "defaultMobile": document.getElementById('appInput').dataset.mobileVal,
     "defaultCountryCode": document.getElementById('appInput').dataset.mobileCode,
+    "hiddenInputName":document.getElementById('appInput').dataset.nameInput,
   };
   renderMobileInput(config);
 });

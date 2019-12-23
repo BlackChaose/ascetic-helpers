@@ -12,7 +12,9 @@ class Phone
 {
 
     //todo add sanitize!
+    // sanitize without countries +8, +9
     static function sanitizeForRussia($mobileNumber){
+
         $tmp = preg_replace('/[^0-9]/', '', $mobileNumber);
         if (strlen($tmp) == 10 && substr($tmp, 0, 1) == '9') {
             return "7" . $tmp;
@@ -24,10 +26,13 @@ class Phone
                     if (substr($tmp, 0, 2) == '79') {
                         return $tmp;
                     }
+                    return $tmp;
                 }
 
-            } else {
-                return '<b style="color:red"> error: </b>' . ' ' . $mobileNumber;
+            } if (strlen($tmp) > 11 && strlen($tmp)<=13){
+                return $tmp;
+            }             else {
+                return NULL;
             }
         }
 
@@ -47,9 +52,13 @@ class Phone
          return false;
         });
 
-        print_r($result);
-
         return $result;
+    }
+
+    static function searchFirstByMobileCode($tpl, $list){
+        return array_map(function($el)use($tpl){
+            return ($el['mobile_code'] === $tpl);
+        }, $list);
     }
 
     static function Extract($mobileNumber){
@@ -63,13 +72,9 @@ class Phone
 
         $result = [];
 
-        $tmp = self::searchCode($mobileNumber, $list);
-        die;
-
-        $result['code'] = $tmp['mobile_code'];
-        $result['mobile'] = str_replace($result['code'], $mobileNumber,count($result['code']));
-        $result['country'] = $tmp['name_lat'];
-
+        $cd = self::searchCode($mobileNumber, $list);
+        $result['code'] = array_shift($cd);
+        $result['mobile'] = mb_eregi_replace('^'.$result['code'],'', $mobileNumber);
         return $result;
     }
 }
