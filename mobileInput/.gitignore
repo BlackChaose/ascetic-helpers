@@ -4,3 +4,4 @@ vendor/
 public/env.php
 engine/env.php
 config/env.php
+public/

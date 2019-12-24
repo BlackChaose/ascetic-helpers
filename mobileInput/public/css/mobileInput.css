@@ -13,6 +13,7 @@
     height: 18px;
 }
 .mobile_input--dropdown-ul {
+    position: fixed;
     max-width: 55px;
     overflow: scroll;
     max-height: 120px;
@@ -23,7 +24,8 @@
     margin-left: 10px;
     padding-left: 5px;
     box-shadow: 5px 5px 3px lightgrey;
-
+    background-color: #FFFFFF;
+    z-index: 999;
     -webkit-animation: dropdown 500ms; /* Safari 4+ */
     -moz-animation:    dropdown 500ms; /* Fx 5+ */
     -o-animation:      dropdown 500ms; /* Opera 12+ */
