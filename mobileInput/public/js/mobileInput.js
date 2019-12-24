@@ -95,7 +95,7 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
   dropDownInput.maxLength = 4;
   dropDownInput.value = inputCountryCodeDefault;
   dropDownHiddenInput.type = 'hidden';
-  dropDownHiddenInput.name = hiddenInputName;
+  dropDownHiddenInput.name = hiddenInputName || 'mobileInput_Mobile';
   dropDownHeader.append(dropDownInput);
   const ul = document.createElement('ul'); // eslint-disable-line
 
