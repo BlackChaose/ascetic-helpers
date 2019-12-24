@@ -133,6 +133,7 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
   mobileInput.required = true;
   mobileInput.value = mobileFormat(inputMobileDefault);
   mobileInput.name = 'mobile_number';
+  mobileInput.autocomplete = 'off';
   obj.append(dropDownHeader);
   obj.append(mobileInput);
   obj.append(dropDownList);
@@ -145,7 +146,7 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
   };
 
   const keybuf = inputMobileDefault.split('');
-  console.warn('inputMobileDefault.split: ', keybuf); // fixme: доработать буфер - надо считывать значение
+  console.warn('inputMobileDefault.split: ', keybuf); // fixme: доработать буфер - надо считывать значение !!!!
   // по умолчанию в буфер + обработка нажатий стрелок
 
   mobileInput.addEventListener('change', e => {
@@ -172,10 +173,10 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
       return;
     }
 
-    console.warn('====> ', typeof parseInt(e.key, 10));
+    e.preventDefault();
     mobileInput.value = '';
-    mobileInput.value = mobileFormat(keybuf);
     keybuf.push(e.key);
+    mobileInput.value = mobileFormat(keybuf);
     HiddenInputHandler();
   });
   dropDownList.addEventListener('mouseleave', () => {

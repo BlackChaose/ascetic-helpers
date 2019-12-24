@@ -109,6 +109,7 @@ const renderDropDownList = (obj,
   mobileInput.required = true;
   mobileInput.value = mobileFormat(inputMobileDefault);
   mobileInput.name = 'mobile_number';
+  mobileInput.autocomplete = 'off';
 
   obj.append(dropDownHeader);
 
@@ -127,7 +128,7 @@ const renderDropDownList = (obj,
 
   const keybuf = inputMobileDefault.split('');
   console.warn('inputMobileDefault.split: ', keybuf);
-  // fixme: доработать буфер - надо считывать значение
+  // fixme: доработать буфер - надо считывать значение !!!!
   // по умолчанию в буфер + обработка нажатий стрелок
   mobileInput.addEventListener('change', (e) => { console.log(e.key); });
   mobileInput.addEventListener('keydown', (e) => {
@@ -147,10 +148,10 @@ const renderDropDownList = (obj,
       HiddenInputHandler();
       return;
     }
-    console.warn('====> ', typeof (parseInt(e.key, 10)));
+    e.preventDefault();
     mobileInput.value = '';
-    mobileInput.value = mobileFormat(keybuf);
     keybuf.push(e.key);
+    mobileInput.value = mobileFormat(keybuf);
     HiddenInputHandler();
   });
 
