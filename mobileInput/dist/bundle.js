@@ -136,6 +136,7 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
   obj.append(dropDownHeader);
   obj.append(mobileInput);
   obj.append(dropDownList);
+  dropDownHiddenInput.value = mobileFormat(inputMobileDefault);
   obj.append(dropDownHiddenInput);
 
   const HiddenInputHandler = function () {
@@ -143,9 +144,13 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
     return dropDownHiddenInput.value;
   };
 
-  const keybuf = inputMobileDefault.split(''); // fixme: доработать буфер - надо считывать значение
+  const keybuf = inputMobileDefault.split('');
+  console.warn('inputMobileDefault.split: ', keybuf); // fixme: доработать буфер - надо считывать значение
   // по умолчанию в буфер + обработка нажатий стрелок
 
+  mobileInput.addEventListener('change', e => {
+    console.log(e.key);
+  });
   mobileInput.addEventListener('keydown', e => {
     if (isNaN(parseInt(e.key, 10)) && e.key !== 'Backspace' && e.key !== 'Enter') {
       // eslint-disable-line
@@ -159,9 +164,11 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
     }
 
     if (e.key === 'Backspace') {
+      e.preventDefault();
       mobileInput.value = '';
-      mobileInput.value = mobileFormat(keybuf);
       keybuf.pop();
+      mobileInput.value = mobileFormat(keybuf);
+      HiddenInputHandler();
       return;
     }
 

@@ -116,6 +116,8 @@ const renderDropDownList = (obj,
 
   obj.append(dropDownList);
 
+  dropDownHiddenInput.value = mobileFormat(inputMobileDefault);
+
   obj.append(dropDownHiddenInput);
 
   const HiddenInputHandler = function () {
@@ -124,8 +126,10 @@ const renderDropDownList = (obj,
   };
 
   const keybuf = inputMobileDefault.split('');
+  console.warn('inputMobileDefault.split: ', keybuf);
   // fixme: доработать буфер - надо считывать значение
   // по умолчанию в буфер + обработка нажатий стрелок
+  mobileInput.addEventListener('change', (e) => { console.log(e.key); });
   mobileInput.addEventListener('keydown', (e) => {
     if (isNaN(parseInt(e.key, 10)) && e.key !== 'Backspace' && e.key !== 'Enter') { // eslint-disable-line
       e.preventDefault();
@@ -136,9 +140,11 @@ const renderDropDownList = (obj,
       return;
     }
     if (e.key === 'Backspace') {
+      e.preventDefault();
       mobileInput.value = '';
-      mobileInput.value = mobileFormat(keybuf);
       keybuf.pop();
+      mobileInput.value = mobileFormat(keybuf);
+      HiddenInputHandler();
       return;
     }
     console.warn('====> ', typeof (parseInt(e.key, 10)));
