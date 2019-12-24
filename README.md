@@ -6,6 +6,8 @@ __my helpers lib__
 *	group_wrapper - ? //fixme
 *	jpegToPdf - convert some images to sinlge pdf (A4)
 * 	snapDiff - create snaps by selectors
+*	mobileInput - input with select mobile code by countries
+
 
 
 
