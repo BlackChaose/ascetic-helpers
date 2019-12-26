@@ -26,6 +26,8 @@ if (!empty($_GET) && $_GET['get'] === 'data') {
         echo json_encode(['Error!' => $e->getMessage()]);
         die;
     }
+}elseif(!empty($_GET) && $_GET['get']==='initdb') {
+    require "../scripts/initdb.php";
 }else {
     http_response_code(200);
     echo "!!!";
