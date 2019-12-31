@@ -33,30 +33,62 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.bundle.min.js"></script>
 
         <script>
-            //fixme:  see https://www.chartjs.org/docs/latest/getting-started/usage.html and fix!
+          let tt = {{ times_val|json_encode|raw }};
+          let tv = tt.map(function (el) {
+            let arr = [];
+            arr.x = el.x;
+            arr.y = moment(el.y).valueOf();
+            return arr;
+          });
+          let deadLine = tv.map(function (el) {
+            //el.y = moment('1970-02-01 09:00:00').valueOf();
+            let arr = [];
+            arr.x = el.x;
+            arr.y = moment('1970-02-01 09:00:00').valueOf();
+            return arr;
+          });
+
+          let labales = {{ labels|json_encode|raw }};
+          console.log(labales);
+
           var ctx = document.getElementById('myChart').getContext('2d');
           var myChart = new Chart(ctx, {
             type: 'line',
             data: {
               labels:{{ labels|json_encode|raw }},
               datasets: [{
-                label: '#',
-                data: {{ times_val|json_encode|raw }},
+                label: 'Nik',
+                //data: {{ times_val|json_encode|raw }},
+                data: tv,
                 backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 0, 0, 0.4)',
                 ],
                 borderColor: [
-                  'rgba(255, 99, 132, 1)',
+                  'rgba(255, 0, 0, 1)',
                 ],
-                borderWidth: 1
-              }]
+                borderWidth: 2,
+                order: 1,
+              },
+                {
+                  label: 'start day',
+                  data: deadLine,
+                  backgroundColor: [
+                    'rgba(0, 255, 0, 1)',
+                  ],
+                  borderColor: [
+                    'rgba(255, 0, 0, 1)',
+                  ],
+                  borderWidth: 3,
+                  order: 2,
+                }
+              ]
             },
             options: {
               scales: {
                 xAxes: [{
-                  type: "time",
+                  type: 'time',
                   time: {
-                    unit: "day"
+                    unit: 'day'
                   }
                 }],
                 yAxes: [
@@ -71,10 +103,23 @@
                       callback: value => {
                         let date = moment(value);
                         return date.format('h A');
+                        //return date.valueOf();
                       }
                     }
                   }
                 ]
+              },
+              tooltips: {
+                callbacks: {
+                  label: function (tooltipItem, data) {
+                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                    if (label) {
+                      label += ' ';
+                    }
+                    //label += Math.round(tooltipItem.yLabel * 100) / 100;
+                    return label;
+                  }
+                }
               }
             }
           });

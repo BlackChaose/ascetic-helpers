@@ -24,10 +24,9 @@ function plainDates($arr, $field)
             $time = $dt->format('H:i:s');
             return $time;
         }, $arr),
-        //fixme: see https://www.chartjs.org/docs/latest/getting-started/usage.html and fix!
         'times_val' => array_map(function ($el) use ($field) {
             $dt = new DateTime($el[$field]);
-            $timeString = '1970-02-01'.$dt->format('H:i:s');
+            $timeString = '1970-02-01 '.$dt->format('H:i:s');
             return ["x"=>$el[$field],"y"=>$timeString];
         }, $arr),
         'labels' => array_map(function ($el) use ($field) {
