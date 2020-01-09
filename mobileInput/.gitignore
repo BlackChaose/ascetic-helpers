@@ -5,4 +5,4 @@ public/env.php
 engine/env.php
 config/env.php
 public/
-/engine/lib/start_spring.sh
+engine/start_spring.sh
