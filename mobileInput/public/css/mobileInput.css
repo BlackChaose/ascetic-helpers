@@ -12,8 +12,17 @@
     width: 60px;
     height: 18px;
 }
+.mobile_input--dropdown-input-red {
+    display: inline-block;
+    width: 60px;
+    height: 18px;
+    border-left: 2px solid tomato;
+    border-top: 2px solid tomato;
+    border-bottom: 2px solid tomato;
+    border-radius: 2px;
+}
 .mobile_input--dropdown-ul {
-    position: fixed;
+    position: absolute;
     max-width: 55px;
     overflow: scroll;
     max-height: 120px;
@@ -95,4 +104,13 @@
     display: inline-block;
     width: 120px;
     height: 18px;
+}
+.mobile_input--mobile-input-red {
+    display: inline-block;
+    width: 120px;
+    height: 18px;
+    border-right: 2px solid tomato;
+    border-top: 2px solid tomato;
+    border-bottom: 2px solid tomato;
+    border-radius: 2px;
 }

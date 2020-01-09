@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     "url": 'ajax_mobile_codes.php',
     "defaultMobile": document.getElementById('appInput').dataset.mobileVal,
     "defaultCountryCode": document.getElementById('appInput').dataset.mobileCode,
-    "hiddenInputName": document.getElementById('appInput').dataset.nameInput
+    "hiddenInputName": document.getElementById('appInput').dataset.nameInput,
+    "borderStyle": document.getElementById('appInput').dataset.borderStyle
   };
   (0, _mobileInputComponent.default)(config);
 });
@@ -77,7 +78,7 @@ const mobileFormat = arr => {
   return str;
 };
 
-const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCodeDefault, hiddenInputName) => {
+const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCodeDefault, hiddenInputName, borderStyle) => {
   const dropDownHeader = document.createElement('span'); // eslint-disable-line
 
   const dropDownInput = document.createElement('input'); // eslint-disable-line
@@ -88,7 +89,13 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
 
   dropDownList.className = 'mobile_input--dropdown-list';
   dropDownHeader.className = 'mobile_input--dropdown-header';
-  dropDownInput.className = 'mobile_input--dropdown-input';
+
+  if (borderStyle === 'red') {
+    dropDownInput.className = 'mobile_input--dropdown-input-red';
+  } else if (borderStyle === 'define') {
+    dropDownInput.className = 'mobile_input--dropdown-input';
+  }
+
   dropDownInput.name = 'country_code';
   dropDownInput.readOnly = true;
   dropDownInput.placeholder = 'код';
@@ -125,7 +132,12 @@ const renderDropDownList = (obj, SortedFlags, inputMobileDefault, inputCountryCo
   dropDownList.append(ul);
   const mobileInput = document.createElement('input'); // eslint-disable-line
 
-  mobileInput.className = 'mobile_input--mobile-input';
+  if (borderStyle === 'red') {
+    mobileInput.className = 'mobile_input--mobile-input-red';
+  } else if (borderStyle === 'define') {
+    mobileInput.className = 'mobile_input--mobile-input';
+  }
+
   mobileInput.pattern = '\\d{3}(\\s|-)\\d{3}(\\s|-)\\d{4}';
   mobileInput.placeholder = 'XXX-XXX-XXXX';
   mobileInput.title = 'номер мобильного телефона';
@@ -209,7 +221,7 @@ const renderMobileInput = config => {
   sendRequest(config.url).then(MobileCodes => {
     const SortedMobileCodes = formatCodes(MobileCodes);
     renderLabel(config.domObject);
-    renderDropDownList(config.domObject, SortedMobileCodes, config.defaultMobile, config.defaultCountryCode, config.hiddenInputName);
+    renderDropDownList(config.domObject, SortedMobileCodes, config.defaultMobile, config.defaultCountryCode, config.hiddenInputName, config.borderStyle);
   }).catch(error => console.log(error));
   return 0;
 };

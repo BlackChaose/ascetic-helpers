@@ -104,7 +104,7 @@ function parse_and_save(){
 <hr>
 <div style="height: 5em; width: 100%; background-color: black;">###</div>
 <!--<form id="appInput" data-mobile-code="7" data-mobile-val="9998881010">-->
-<form id="appInput" data-mobile-code="7" data-mobile-val="">
+<form id="appInput" data-mobile-code="7" data-mobile-val="" data-border-style="red">
 
 </form>
 <div style="height: 5em; width: 100%; background-color: black;">###</div>

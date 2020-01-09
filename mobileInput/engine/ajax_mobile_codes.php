@@ -4,9 +4,9 @@
  * Date: 10.12.19
  * Time: 10:31
  */
-use PDO;
-
-require_once 'env.php';
+ini_set('display_errors','1');
+require '../vendor/autoload.php';
+use \PDO;
 
 if (!empty($_POST) && $_POST['mobile_codes'] === 'get') {
 
