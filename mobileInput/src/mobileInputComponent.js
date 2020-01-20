@@ -29,7 +29,7 @@ const renderLabel = (obj) => {
   const labelInput = document.createElement('label'); // eslint-disable-line
   labelInput.for = obj.getElementsByTagName('input').id;
   labelInput.textContent = ' +';
-  obj.append(labelInput);
+  obj.appendChild(labelInput);
   return obj;
 };
 
@@ -76,7 +76,7 @@ const renderDropDownList = (obj,
   dropDownHiddenInput.type = 'hidden';
   dropDownHiddenInput.name = hiddenInputName || 'mobileInput_Mobile';
 
-  dropDownHeader.append(dropDownInput);
+  dropDownHeader.appendChild(dropDownInput);
 
   const ul = document.createElement('ul'); // eslint-disable-line
   ul.className = 'mobile_input--dropdown-ul';
@@ -102,10 +102,10 @@ const renderDropDownList = (obj,
       dropDownInput.value = liText.textContent;
       dropDownList.style.display = 'none';
     });
-    ul.append(li);
+    ul.appendChild(li);
   });
 
-  dropDownList.append(ul);
+  dropDownList.appendChild(ul);
 
   const mobileInput = document.createElement('input'); // eslint-disable-line
   if (borderStyle === 'red') {
@@ -123,15 +123,15 @@ const renderDropDownList = (obj,
   mobileInput.name = 'mobile_number';
   mobileInput.autocomplete = 'off';
 
-  obj.append(dropDownHeader);
+  obj.appendChild(dropDownHeader);
 
-  obj.append(mobileInput);
+  obj.appendChild(mobileInput);
 
-  obj.append(dropDownList);
+  obj.appendChild(dropDownList);
 
   dropDownHiddenInput.value = mobileFormat(inputMobileDefault);
 
-  obj.append(dropDownHiddenInput);
+  obj.appendChild(dropDownHiddenInput);
 
   const HiddenInputHandler = function () {
     dropDownHiddenInput.value = dropDownInput.value + mobileInput.value;

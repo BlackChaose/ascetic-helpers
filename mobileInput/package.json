@@ -23,9 +23,15 @@
   "license": "MIT",
   "homepage": "https://github.com/BlackChaose/my_snippets#readme",
   "dependencies": {
+    "@babel/polyfill": "^7.8.3",
     "lodash": "^4.17.15",
     "select2": "4.0.12"
   },
+  "browserslist": [
+    "last 2 version",
+    "> 1%",
+    "IE 10"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.7.4",
