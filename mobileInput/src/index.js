@@ -3,7 +3,7 @@ import renderMobileInput from './mobileInputComponent';
 
 /* eslint-disable */
 document.addEventListener('DOMContentLoaded', () => {
-  if(window.location.pathname === '/experty/expert_change_dom.php') {
+  if(window.location.pathname === '/experty/expert_change_dom.php' || window.location.host === 'localhost:5000') {
     const config = {
       "domObject": document.getElementById('appInput'),
       "url": 'ajax_mobile_codes.php',

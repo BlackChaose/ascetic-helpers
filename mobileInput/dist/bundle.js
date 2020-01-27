@@ -9,7 +9,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /* eslint-disable */
 document.addEventListener('DOMContentLoaded', function () {
-  if (window.location.pathname === '/experty/expert_change_dom.php') {
+  if (window.location.pathname === '/experty/expert_change_dom.php' || window.location.host === 'localhost:5000') {
     var config = {
       "domObject": document.getElementById('appInput'),
       "url": 'ajax_mobile_codes.php',
@@ -33,8 +33,6 @@ exports.default = void 0;
 
 var _lodash = require("lodash");
 
-// todo validation function //html5 + html4 && IE 10/11 support;
-// todo
 var sendRequest = function sendRequest(url) {
   /* eslint-disable */
   var xhttp = new XMLHttpRequest();
@@ -90,6 +88,8 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
   var dropDownList = document.createElement('div'); // eslint-disable-line
 
   var dropDownHiddenInput = document.createElement('input'); // eslint-disable-line
+
+  var dropDownArrow = document.createElement('div'); // eslint-disable-line
 
   dropDownList.className = 'mobile_input--dropdown-list';
   dropDownHeader.className = 'mobile_input--dropdown-header';
@@ -151,6 +151,7 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
   mobileInput.name = 'mobile_number';
   mobileInput.autocomplete = 'off';
   obj.appendChild(dropDownHeader);
+  dropDownHeader.appendChild(dropDownArrow);
   obj.appendChild(mobileInput);
   obj.appendChild(dropDownList);
   dropDownHiddenInput.value = mobileFormat(inputMobileDefault);
@@ -162,8 +163,7 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
   };
 
   var keybuf = inputMobileDefault.split('');
-  console.warn('inputMobileDefault.split: ', keybuf); // fixme: доработать буфер - надо считывать значение !!!!
-  // по умолчанию в буфер + обработка нажатий стрелок
+  console.warn('inputMobileDefault.split: ', keybuf); // по умолчанию в буфер + обработка нажатий стрелок
 
   mobileInput.addEventListener('change', function (e) {
     console.log(e.key);
@@ -203,6 +203,12 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
     dropDownList.style.display = dropDownList.style.display === 'block' ? 'none' : 'block';
     HiddenInputHandler();
   });
+  dropDownArrow.className = 'mobile_input--dropdown-header-arrow';
+  dropDownArrow.textContent = '▼';
+  dropDownArrow.addEventListener('click', function () {
+    dropDownList.style.display = dropDownList.style.display === 'block' ? 'none' : 'block';
+    HiddenInputHandler();
+  });
   mobileInput.addEventListener('focusin', function () {
     dropDownList.style.display = 'none';
     HiddenInputHandler();
@@ -220,9 +226,9 @@ var upUsedCountry = function upUsedCountry(codes, countries) {
 
 var formatCodes = function formatCodes(arr) {
   var sortArr = (0, _lodash.sortBy)(arr.mobile_codes, [function (o) {
-    return o.name_cyr;
+    return o.mobile_code;
   }]);
-  return upUsedCountry(sortArr, ['Russia', 'Belarus', 'Finland', 'Kazakhstan', 'Kyrgyzstan', 'Azerbaijan', 'Armenia', 'Moldova', 'Tajikistan', 'Uzbekistan']);
+  return upUsedCountry(sortArr, ['Russia']);
 };
 
 var renderMobileInput = function renderMobileInput(config) {

@@ -2,8 +2,6 @@ import {
   forEach, sortBy, reduce,
 } from 'lodash';
 
-// todo validation function //html5 + html4 && IE 10/11 support;
-// todo
 const sendRequest = (url) => {
   /* eslint-disable */
   const xhttp = new XMLHttpRequest();
@@ -57,6 +55,7 @@ const renderDropDownList = (obj,
   const dropDownInput = document.createElement('input'); // eslint-disable-line
   const dropDownList = document.createElement('div'); // eslint-disable-line
   const dropDownHiddenInput = document.createElement('input'); // eslint-disable-line
+  const dropDownArrow = document.createElement('div'); // eslint-disable-line
 
   dropDownList.className = 'mobile_input--dropdown-list';
   dropDownHeader.className = 'mobile_input--dropdown-header';
@@ -125,6 +124,8 @@ const renderDropDownList = (obj,
 
   obj.appendChild(dropDownHeader);
 
+  dropDownHeader.appendChild(dropDownArrow);
+
   obj.appendChild(mobileInput);
 
   obj.appendChild(dropDownList);
@@ -140,7 +141,6 @@ const renderDropDownList = (obj,
 
   const keybuf = inputMobileDefault.split('');
   console.warn('inputMobileDefault.split: ', keybuf);
-  // fixme: доработать буфер - надо считывать значение !!!!
   // по умолчанию в буфер + обработка нажатий стрелок
   mobileInput.addEventListener('change', (e) => { console.log(e.key); });
   mobileInput.addEventListener('keydown', (e) => {
@@ -177,6 +177,13 @@ const renderDropDownList = (obj,
     HiddenInputHandler();
   });
 
+  dropDownArrow.className = 'mobile_input--dropdown-header-arrow';
+  dropDownArrow.textContent = '▼';
+  dropDownArrow.addEventListener('click', () => {
+    dropDownList.style.display = (dropDownList.style.display === 'block') ? 'none' : 'block';
+    HiddenInputHandler();
+  });
+
   mobileInput.addEventListener('focusin', () => {
     dropDownList.style.display = 'none';
     HiddenInputHandler();
@@ -192,8 +199,8 @@ const upUsedCountry = (codes, countries) => {
 };
 
 const formatCodes = (arr) => {
-  const sortArr = sortBy(arr.mobile_codes, [(o) => o.name_cyr]);
-  return upUsedCountry(sortArr, ['Russia', 'Belarus', 'Finland', 'Kazakhstan', 'Kyrgyzstan', 'Azerbaijan', 'Armenia', 'Moldova', 'Tajikistan', 'Uzbekistan']);
+  const sortArr = sortBy(arr.mobile_codes, [(o) => o.mobile_code]);
+  return upUsedCountry(sortArr, ['Russia']);
 };
 
 const renderMobileInput = (config) => {

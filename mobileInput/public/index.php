@@ -107,7 +107,7 @@ function parse_and_save(){
 <form id="appInput" data-mobile-code="7" data-mobile-val="" data-border-style="red">
 
 </form>
-<div style="height: 5em; width: 100%; background-color: black;">###</div>
+<div>###</div>
 <script type="text/javascript" src="js/mobileInput.js"></script>
 </body>
 </html>
