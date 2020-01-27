@@ -94,7 +94,7 @@ function parse_and_save(){
 <head>
     <meta charset="UTF-8">
     <title>test mobile input</title>
-    <link rel="stylesheet" href="css/mobileInput.css">
+    <link rel="stylesheet" href="css/mobileInput.css?t=<?= filemtime($_SERVER['DOCUMENT_ROOT'].'/css/mobileInput.css'); ?>">
 
 </head>
 <body>
@@ -108,6 +108,6 @@ function parse_and_save(){
 
 </form>
 <div>###</div>
-<script type="text/javascript" src="js/mobileInput.js"></script>
+<script type="text/javascript" src="js/mobileInput.js?t = <?=filemtime($_SERVER['DOCUMENT_ROOT'].'/js/mobileInput.js')?>"></script>
 </body>
 </html>

@@ -162,6 +162,93 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
     return dropDownHiddenInput.value;
   };
 
+  var getSelectionIndex = function getSelectionIndex(e) {
+    if (e.target.selectionStart === e.target.selectionEnd) {
+      if (e.target.selectionStart >= 0 && e.target.selectionStart < 3) {
+        return {
+          index: e.target.selectionStart,
+          count: 1
+        };
+      }
+
+      if (e.target.selectionStart > 3 && e.target.selectionStart < 7) {
+        return {
+          index: e.target.selectionStart - 1,
+          count: 1
+        };
+      }
+
+      if (e.target.selectionStart > 7 && e.target.selectionStart <= 12) {
+        return {
+          index: e.target.selectionStart - 2,
+          count: 1
+        };
+      }
+    } // fixme:
+
+
+    var count = 0;
+
+    if (e.target.selectionStart >= 0 && e.target.selectionStart < 3 && e.target.selectionEnd > 0 && e.target.selectionEnd < 3) {
+      // console.log('1 =>');
+      count = e.target.selectionEnd - e.target.selectionStart;
+      return {
+        index: e.target.selectionStart,
+        cnt: count
+      };
+    }
+
+    if (e.target.selectionStart > 3 && e.target.selectionStart < 7 && e.target.selectionEnd > 3 && e.target.selectionEnd < 7) {
+      // console.log('2 =>');
+      count = e.target.selectionEnd - e.target.selectionStart;
+      return {
+        index: e.target.selectionStart - 1,
+        cnt: count
+      };
+    }
+
+    if (e.target.selectionStart > 7 && e.target.selectionStart <= 12 && e.target.selectionEnd > 8 && e.target.selectionEnd <= 12) {
+      // console.log('3 =>');
+      count = e.target.selectionEnd - e.target.selectionStart;
+      return {
+        index: e.target.selectionStart - 2,
+        cnt: count
+      };
+    }
+
+    if (e.target.selectionStart >= 0 && e.target.selectionStart < 3 && e.target.selectionEnd > 3 && e.target.selectionEnd <= 7) {
+      // console.log('4 =>');
+      count = e.target.selectionEnd - e.target.selectionStart - 1;
+      return {
+        index: e.target.selectionStart,
+        cnt: count
+      };
+    }
+
+    if (e.target.selectionStart >= 0 && e.target.selectionStart <= 3 && e.target.selectionEnd > 7 && e.target.selectionEnd <= 12) {
+      // console.log('5 =>');
+      count = e.target.selectionEnd - e.target.selectionStart - 2;
+      return {
+        index: e.target.selectionStart,
+        cnt: count
+      };
+    }
+
+    if (e.target.selectionStart > 3 && e.target.selectionStart <= 7 && e.target.selectionEnd >= 3 && e.target.selectionEnd <= 12) {
+      // console.log('6 =>');
+      count = e.target.selectionEnd - e.target.selectionStart - 1;
+      return {
+        index: e.target.selectionStart - 1,
+        cnt: count
+      };
+    }
+
+    return {
+      index: e.target.selectionStart,
+      count: count
+    };
+  };
+
   var keybuf = inputMobileDefault.split('');
   console.warn('inputMobileDefault.split: ', keybuf); // по умолчанию в буфер + обработка нажатий стрелок
 
@@ -169,23 +256,83 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
     console.log(e.key);
   });
   mobileInput.addEventListener('keydown', function (e) {
-    if (isNaN(parseInt(e.key, 10)) && e.key !== 'Backspace' && e.key !== 'Enter') {
+    console.log(e.key);
+    console.warn(keybuf.length); // ArrowRight ArrowLeft ArrowUp ArrowDown Delete
+
+    if (isNaN(parseInt(e.key, 10)) && e.key !== 'Backspace' && e.key !== 'Enter' && e.key !== 'Delete' // eslint-disable-line
+    && e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') {
       // eslint-disable-line
       e.preventDefault();
       return;
     }
 
-    if (keybuf.length >= 10 && e.key !== 'Backspace') {
+    if (keybuf.length >= 10 && e.key !== 'Backspace' && e.key !== 'Enter' && e.key !== 'Delete' // eslint-disable-line
+    && e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') {
       e.preventDefault();
       return;
     }
+    /* fixme */
+
 
     if (e.key === 'Backspace') {
+      e.preventDefault(); // mobileInput.value = '';
+      // console.log(keybuf[e.target.selectionStart]);
+      // console.log(e.target.selectionStart);
+      // console.log(e.target.selectionEnd);
+
+      console.log(getSelectionIndex(e));
+      var spldt = getSelectionIndex(e);
+      /* fixme  items.splice(1, 1, 1010); */
+
+      mobileInput.value = '';
+      keybuf.splice(spldt.index, spldt.count);
+      console.warn('keybuf: ', keybuf);
+      mobileInput.value = mobileFormat(keybuf);
+      HiddenInputHandler();
+      return;
+    }
+    /* fixme: */
+
+
+    if (e.key === 'Delete') {
       e.preventDefault();
       mobileInput.value = '';
+      /* fixme: */
+
       keybuf.pop();
       mobileInput.value = mobileFormat(keybuf);
       HiddenInputHandler();
+      return;
+    }
+
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault(); // mobileInput.value = '';
+
+      if (e.target.selectionStart > 0) {
+        e.target.selectionStart -= 1;
+        e.target.selectionEnd -= 1;
+      }
+      /* fixme: */
+      // keybuf.pop();
+      // mobileInput.value = mobileFormat(keybuf);
+      // HiddenInputHandler();
+
+
+      return;
+    }
+
+    if (e.key === 'ArrowRight') {
+      e.preventDefault(); // mobileInput.value = '';
+
+      if (e.target.selectionStart >= 0 && e.target.selectionEnd <= 12) {
+        e.target.selectionStart += 1;
+      }
+      /* fixme: */
+      // keybuf.pop();
+      // mobileInput.value = mobileFormat(keybuf);
+      // HiddenInputHandler();
+
+
       return;
     }
 
@@ -194,6 +341,9 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
     keybuf.push(e.key);
     mobileInput.value = mobileFormat(keybuf);
     HiddenInputHandler();
+  });
+  mobileInput.addEventListener('keyup', function (e) {
+    console.log('Caret at: ', e.target.selectionStart);
   });
   dropDownList.addEventListener('mouseleave', function () {
     dropDownList.style.display = 'none';
