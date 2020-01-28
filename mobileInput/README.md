@@ -10,3 +10,11 @@ v 0.0.1
 
 npm install -g uglify-js
 npm install --global watchify
+
+#### ---
+
+for watchdog in dev mode in to terminals run:
+
+```make asm_watch_babel```
+
+```make asm_watchify ```

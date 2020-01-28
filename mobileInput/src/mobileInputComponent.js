@@ -65,7 +65,6 @@ const renderDropDownList = (obj,
     dropDownInput.className = 'mobile_input--dropdown-input';
   }
 
-
   dropDownInput.name = 'country_code';
   dropDownInput.readOnly = true;
   dropDownInput.placeholder = 'код';
@@ -161,13 +160,13 @@ const renderDropDownList = (obj,
       return { index: e.target.selectionStart, cnt: count };
     }
     if (e.target.selectionStart > 3 && e.target.selectionStart < 7
-    && e.target.selectionEnd > 3 && e.target.selectionEnd < 7) {
+      && e.target.selectionEnd > 3 && e.target.selectionEnd < 7) {
       console.log('2 => ');
       count = e.target.selectionEnd - e.target.selectionStart;
       return { index: e.target.selectionStart - 1, cnt: count };
     }
     if (e.target.selectionStart > 7 && e.target.selectionStart <= 12
-    && e.target.selectionEnd > 8 && e.target.selectionEnd <= 12) {
+      && e.target.selectionEnd > 8 && e.target.selectionEnd <= 12) {
       console.log('3 => ');
       count = e.target.selectionEnd - e.target.selectionStart;
       return { index: e.target.selectionStart - 2, cnt: count };
@@ -199,42 +198,79 @@ const renderDropDownList = (obj,
     e.target.selectionEnd = e.target.selectionStart;
     return index;
   };
-  const getSelectionIndexEx = (e) => {
-    const
-    if (e.target.selectionStart === e.target.selectionEnd) {}
-  }
-  const keybuf = inputMobileDefault.split('');
+  const delSelection = (e, buffer) => {
+    e.preventDefault();
+    const indexes = {
+      caret: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      digits: [0, 1, 2, null, 4, 5, 6, null, 8, 9, 10, 11, null],
+      buffer: [0, 1, 2, null, 3, 4, 5, null, 6, 7, 8, 9, null],
+    };
+    switch (e.key) {
+      case 'Backspace': {
+        console.log(e.target.selectionStart, ' ', e.target.selectionEnd, ' ', e.key, ' ', indexes, ' ', buffer);
+        console.warn('--------------------------');
+        if (e.target.selectionStart === e.target.selectionEnd) {
+          console.log('if1');
+          if (indexes.buffer[e.target.selectionStart - 1] !== null) {
+            console.log('if2 ', indexes.buffer[e.target.selectionStart - 1]);
+            buffer.splice(indexes.buffer[e.target.selectionStart - 1], 1);
+          }
+          mobileInput.value = '';
+          mobileInput.value = mobileFormat(buffer);
+          setSelectionIndex(e, e.target.selectionStart);
+          if (indexes.buffer[e.target.selectionStart - 1] === null) {
+            setSelectionIndex(e, e.target.selectionStart - 1);
+          }
+          console.warn('buffer: ', buffer);
+          return buffer;
+        }
+        break;
+      }
+      default: {
+        console.log('default case!');
+      }
+    }
+    return buffer;
+  };
+  let keybuf = inputMobileDefault.split('');
   console.warn('inputMobileDefault.split: ', keybuf);
+
   // по умолчанию в буфер + обработка нажатий стрелок
   mobileInput.addEventListener('change', (e) => { console.log(e.key); });
+
   mobileInput.addEventListener('keydown', (e) => {
     console.log('keydown!: ', e.key);
     // ArrowRight ArrowLeft ArrowUp ArrowDown Delete
     if (isNaN(parseInt(e.key, 10)) && e.key !== 'Backspace' && e.key !== 'Enter' && e.key !== 'Delete' // eslint-disable-line
-    && e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') { // eslint-disable-line
+      && e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') { // eslint-disable-line
       e.preventDefault();
       return;
     }
-    if (keybuf.length >= 10 && e.key !== 'Backspace'&& e.key !== 'Enter' && e.key !== 'Delete' // eslint-disable-line
+    if (keybuf.length >= 10 && e.key !== 'Backspace' && e.key !== 'Enter' && e.key !== 'Delete' // eslint-disable-line
       && e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') {
       e.preventDefault();
       return;
     }
-    /* fixme BROKEN! repair edit in input! */
+
+    /* fixme BROKEN! repair edit in input! ----------------------------------------------- */
     if (e.key === 'Backspace') {
-      e.preventDefault();
-      console.log(getSelectionIndex(e));
-      const curPos = getSelectionIndex(e);
-      console.log('keybuf before: ', keybuf);
-      // mobileInput.value = '';
-      keybuf.splice(curPos.index - 1, curPos.count);
-      setSelectionIndex(e, curPos.index - 1);
-      console.warn('keybuf after: ', keybuf);
-      // mobileInput.value = mobileFormat(keybuf);
-      // HiddenInputHandler();
-      return;
+    delSelection(e, keybuf);
+    return;
     }
-    /* fixme: */
+    // if (e.key === 'Backspace') {
+    //   e.preventDefault();
+    //   console.log(getSelectionIndex(e));
+    //   const curPos = getSelectionIndex(e);
+    //   console.log('keybuf before: ', keybuf);
+    //   // mobileInput.value = '';
+    //   keybuf.splice(curPos.index - 1, curPos.count);
+    //   setSelectionIndex(e, curPos.index - 1);
+    //   console.warn('keybuf after: ', keybuf);
+    //   // mobileInput.value = mobileFormat(keybuf);
+    //   // HiddenInputHandler();
+    //   return;
+    // }
+    /* fixme:----------------------------------------------------------------------------- */
     if (e.key === 'Delete') {
       e.preventDefault();
       mobileInput.value = '';
