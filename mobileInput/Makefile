@@ -25,9 +25,16 @@ testphp:
 asm:
 	npx eslint .
 	npm run build
-	browserify -e ./dist/index.js > ./dist/bundle.js
+	browserify -e ./dist/index.js | uglifyjs > ./dist/bundle.js
 	cp -Rv --remove-destination ./assets/* ./public
 	cp -Rv --remove-destination ./dist/bundle.js ./public/js/mobileInput.js
 	cp -Rv --remove-destination ./engine/* ./public
 	composer update
 	composer dumpauto
+
+asm_watch_babel:
+	npm run build_watch
+
+asm_watchify:
+	watchify ./dist/index.js -o 'uglifyjs -cm > ./public/js/mobileInput.js'
+
