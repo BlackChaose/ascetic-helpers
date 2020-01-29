@@ -9,7 +9,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* eslint-disable */
 document.addEventListener('DOMContentLoaded', function () {
   if (window.location.pathname === '/experty/expert_change_dom.php' || window.location.host === 'localhost:5000') {
-    console.log('debug p1! ');
     var config = {
       "domObject": document.getElementById('appInput'),
       "url": 'ajax_mobile_codes.php',
