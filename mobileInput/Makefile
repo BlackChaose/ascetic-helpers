@@ -36,5 +36,5 @@ asm_watch_babel:
 	npm run build_watch
 
 asm_watchify:
-	watchify ./dist/index.js -o 'uglifyjs -cm > ./public/js/mobileInput.js'
-
+	#watchify ./dist/index.js -o 'uglifyjs -cm > ./public/js/mobileInput.js'
+	watchify ./dist/index.js -o './public/js/mobileInput.js'

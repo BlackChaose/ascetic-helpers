@@ -45,6 +45,8 @@ const mobileFormat = (arr) => {
   return str;
 };
 
+const mobileClear = (str) => str.match(/\d/g);
+
 const renderDropDownList = (obj,
   SortedFlags,
   inputMobileDefault,
@@ -138,67 +140,15 @@ const renderDropDownList = (obj,
     return dropDownHiddenInput.value;
   };
 
-  const getSelectionIndex = (e) => {
-    if (e.target.selectionStart === e.target.selectionEnd) {
-      if (e.target.selectionStart >= 0 && e.target.selectionStart < 3) {
-        return { index: e.target.selectionStart, count: 1 };
-      }
-      if (e.target.selectionStart > 3 && e.target.selectionStart < 7) {
-        return { index: e.target.selectionStart - 1, count: 1 };
-      }
-      if (e.target.selectionStart > 7 && e.target.selectionStart <= 12) {
-        return { index: e.target.selectionStart - 2, count: 1 };
-      }
-    }
-    // fixme:
-    let count = 0;
-
-    if (e.target.selectionStart >= 0 && e.target.selectionStart < 3
-      && e.target.selectionEnd > 0 && e.target.selectionEnd < 3) {
-      console.log('1 => ');
-      count = e.target.selectionEnd - e.target.selectionStart;
-      return { index: e.target.selectionStart, cnt: count };
-    }
-    if (e.target.selectionStart > 3 && e.target.selectionStart < 7
-      && e.target.selectionEnd > 3 && e.target.selectionEnd < 7) {
-      console.log('2 => ');
-      count = e.target.selectionEnd - e.target.selectionStart;
-      return { index: e.target.selectionStart - 1, cnt: count };
-    }
-    if (e.target.selectionStart > 7 && e.target.selectionStart <= 12
-      && e.target.selectionEnd > 8 && e.target.selectionEnd <= 12) {
-      console.log('3 => ');
-      count = e.target.selectionEnd - e.target.selectionStart;
-      return { index: e.target.selectionStart - 2, cnt: count };
-    }
-
-    if (e.target.selectionStart >= 0 && e.target.selectionStart < 3
-      && e.target.selectionEnd > 3 && e.target.selectionEnd <= 7) {
-      console.log('4 => ');
-      count = e.target.selectionEnd - e.target.selectionStart - 1;
-      return { index: e.target.selectionStart, cnt: count };
-    }
-    if (e.target.selectionStart >= 0 && e.target.selectionStart <= 3
-      && e.target.selectionEnd > 7 && e.target.selectionEnd <= 12) {
-      console.log('5 => ');
-      count = e.target.selectionEnd - e.target.selectionStart - 2;
-      return { index: e.target.selectionStart, cnt: count };
-    }
-    if (e.target.selectionStart > 3 && e.target.selectionStart <= 7
-      && e.target.selectionEnd >= 3 && e.target.selectionEnd <= 12) {
-      console.log('6 =>');
-      count = e.target.selectionEnd - e.target.selectionStart - 1;
-      return { index: e.target.selectionStart - 1, cnt: count };
-    }
-    return { index: e.target.selectionStart, count };
-  };
-
   const setSelectionIndex = (e, index) => {
     e.target.selectionStart = index;
     e.target.selectionEnd = e.target.selectionStart;
     return index;
   };
+
   const delSelection = (e, buffer) => {
+    const currentCaret = e.target.selectionStart;
+    const currentEnd = mobileInput.value.length;
     e.preventDefault();
     const indexes = {
       caret: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
@@ -207,32 +157,55 @@ const renderDropDownList = (obj,
     };
     switch (e.key) {
       case 'Backspace': {
-        console.log(e.target.selectionStart, ' ', e.target.selectionEnd, ' ', e.key, ' ', indexes, ' ', buffer);
-        console.warn('--------------------------');
+        if (currentCaret === 0 && e.target.selectionEnd === 0) { return; }
         if (e.target.selectionStart === e.target.selectionEnd) {
-          console.log('if1');
           if (indexes.buffer[e.target.selectionStart - 1] !== null) {
-            console.log('if2 ', indexes.buffer[e.target.selectionStart - 1]);
             buffer.splice(indexes.buffer[e.target.selectionStart - 1], 1);
           }
           mobileInput.value = '';
           mobileInput.value = mobileFormat(buffer);
-          setSelectionIndex(e, e.target.selectionStart);
-          if (indexes.buffer[e.target.selectionStart - 1] === null) {
-            setSelectionIndex(e, e.target.selectionStart - 1);
+          if (indexes.buffer[e.target.selectionStart] === null) {
+            setSelectionIndex(e, currentCaret - 2);
+          } else {
+            setSelectionIndex(e, currentCaret - 1);
           }
-          console.warn('buffer: ', buffer);
-          return buffer;
+          break;
         }
+        const delPart = mobileInput.value;
+        const delPartRes = delPart.substring(0, e.target.selectionStart) + delPart.substring(e.target.selectionEnd, delPart.length);
+        const delPartsCnt = mobileClear(delPart.substring(e.target.selectionStart, e.target.selectionEnd)).length;
+        buffer.splice(indexes.buffer[e.target.selectionStart], delPartsCnt);
+        mobileInput.value = mobileFormat(mobileClear(delPartRes));
         break;
       }
-      default: {
-        console.log('default case!');
+      case 'Delete': {
+        if (currentCaret === currentEnd && e.target.selectionStart === currentEnd) { return; }
+        if (e.target.selectionStart === e.target.selectionEnd) {
+          if (indexes.buffer[e.target.selectionStart] !== null) {
+            buffer.splice(indexes.buffer[e.target.selectionStart], 1);
+          }
+          mobileInput.value = '';
+          mobileInput.value = mobileFormat(buffer);
+          if (indexes.buffer[e.target.selectionStart] === null) {
+            setSelectionIndex(e, currentCaret + 1);
+          } else {
+            setSelectionIndex(e, currentCaret);
+          }
+          break;
+        }
+        const delPart = mobileInput.value;
+        const delPartRes = delPart.substring(0, e.target.selectionStart) + delPart.substring(e.target.selectionEnd, delPart.length);
+        const delPartsCnt = mobileClear(delPart.substring(e.target.selectionStart, e.target.selectionEnd)).length;
+        buffer.splice(indexes.buffer[e.target.selectionStart], delPartsCnt);
+        mobileInput.value = mobileFormat(mobileClear(delPartRes));
+        break;
       }
+      default: return buffer;
     }
     return buffer;
   };
-  let keybuf = inputMobileDefault.split('');
+  const keybuf = inputMobileDefault.split('');
+
   console.warn('inputMobileDefault.split: ', keybuf);
 
   // по умолчанию в буфер + обработка нажатий стрелок
@@ -241,6 +214,9 @@ const renderDropDownList = (obj,
   mobileInput.addEventListener('keydown', (e) => {
     console.log('keydown!: ', e.key);
     // ArrowRight ArrowLeft ArrowUp ArrowDown Delete
+    if (['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'].includes(e.key)) {
+      return;
+    }
     if (isNaN(parseInt(e.key, 10)) && e.key !== 'Backspace' && e.key !== 'Enter' && e.key !== 'Delete' // eslint-disable-line
       && e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') { // eslint-disable-line
       e.preventDefault();
@@ -252,63 +228,37 @@ const renderDropDownList = (obj,
       return;
     }
 
-    /* fixme BROKEN! repair edit in input! ----------------------------------------------- */
+
     if (e.key === 'Backspace') {
-    delSelection(e, keybuf);
-    return;
-    }
-    // if (e.key === 'Backspace') {
-    //   e.preventDefault();
-    //   console.log(getSelectionIndex(e));
-    //   const curPos = getSelectionIndex(e);
-    //   console.log('keybuf before: ', keybuf);
-    //   // mobileInput.value = '';
-    //   keybuf.splice(curPos.index - 1, curPos.count);
-    //   setSelectionIndex(e, curPos.index - 1);
-    //   console.warn('keybuf after: ', keybuf);
-    //   // mobileInput.value = mobileFormat(keybuf);
-    //   // HiddenInputHandler();
-    //   return;
-    // }
-    /* fixme:----------------------------------------------------------------------------- */
-    if (e.key === 'Delete') {
-      e.preventDefault();
-      mobileInput.value = '';
-      /* fixme: */
-      keybuf.pop();
-      mobileInput.value = mobileFormat(keybuf);
-      HiddenInputHandler();
+      delSelection(e, keybuf);
+      selectionStart = null;
+      selectionEnd = null;
       return;
     }
-
+    if (e.key === 'Delete') {
+      delSelection(e, keybuf);
+      selectionStart = null;
+      selectionEnd = null;
+      return;
+    }
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      // mobileInput.value = '';
       if (e.target.selectionStart > 0) {
         e.target.selectionStart -= 1;
         e.target.selectionEnd -= 1;
       }
-
-      /* fixme: */
-      // keybuf.pop();
-      // mobileInput.value = mobileFormat(keybuf);
-      // HiddenInputHandler();
+      console.log(e.target.selectionStart, e.target.selectionEnd);
       return;
     }
 
     if (e.key === 'ArrowRight') {
       e.preventDefault();
-      // mobileInput.value = '';
       if (e.target.selectionStart >= 0 && e.target.selectionEnd <= 12) {
         e.target.selectionStart += 1;
       }
-
-      /* fixme: */
-      // keybuf.pop();
-      // mobileInput.value = mobileFormat(keybuf);
-      // HiddenInputHandler();
       return;
     }
+    //fixme (add shift + key? use e.shiftKey https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/shiftKey
 
     e.preventDefault();
     mobileInput.value = '';
@@ -317,7 +267,8 @@ const renderDropDownList = (obj,
     HiddenInputHandler();
   });
   mobileInput.addEventListener('keyup', (e) => {
-    console.log('Caret at: ', e.target.selectionStart);
+    console.log('keyup: Caret at: ', e.target.selectionStart);
+    console.log('keyup: ', e.key);
   });
 
   dropDownList.addEventListener('mouseleave', () => {
