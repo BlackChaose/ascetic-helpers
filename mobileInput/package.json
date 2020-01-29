@@ -1,6 +1,6 @@
 {
   "name": "dttable",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "data table",
   "main": "index.js",
   "scripts": {

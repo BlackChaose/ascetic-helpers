@@ -181,8 +181,10 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
           }
 
           var delPart = mobileInput.value;
-          var delPartRes = delPart.substring(0, e.target.selectionStart) + delPart.substring(e.target.selectionEnd, delPart.length);
-          var delPartsCnt = mobileClear(delPart.substring(e.target.selectionStart, e.target.selectionEnd)).length;
+          var delPartRes = delPart.substring(0, e.target.selectionStart) + delPart.substring(e.target.selectionEnd, delPart.length); // eslint-disable-line
+
+          var delPartsCnt = mobileClear(delPart.substring(e.target.selectionStart, e.target.selectionEnd)).length; // eslint-disable-line
+
           buffer.splice(indexes.buffer[e.target.selectionStart], delPartsCnt);
           mobileInput.value = mobileFormat(mobileClear(delPartRes));
           break;
@@ -213,9 +215,11 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
 
           var _delPart = mobileInput.value;
 
-          var _delPartRes = _delPart.substring(0, e.target.selectionStart) + _delPart.substring(e.target.selectionEnd, _delPart.length);
+          var _delPartRes = _delPart.substring(0, e.target.selectionStart) + _delPart.substring(e.target.selectionEnd, _delPart.length); // eslint-disable-line
 
-          var _delPartsCnt = mobileClear(_delPart.substring(e.target.selectionStart, e.target.selectionEnd)).length;
+
+          var _delPartsCnt = mobileClear(_delPart.substring(e.target.selectionStart, e.target.selectionEnd)).length; // eslint-disable-line
+
           buffer.splice(indexes.buffer[e.target.selectionStart], _delPartsCnt);
           mobileInput.value = mobileFormat(mobileClear(_delPartRes));
           break;
@@ -223,9 +227,10 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
 
       default:
         return buffer;
+      // eslint-disable-line
     }
 
-    return buffer;
+    return buffer; // eslint-disable-line
   };
 
   var keybuf = inputMobileDefault.split(''); // по умолчанию в буфер + обработка нажатий стрелок
@@ -278,7 +283,7 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
       }
 
       return;
-    } //fixme (add shift + key? use e.shiftKey https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/shiftKey
+    } // fixme (add shift + key? use e.shiftKey https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/shiftKey
 
 
     e.preventDefault();
@@ -286,8 +291,9 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
     keybuf.push(e.key);
     mobileInput.value = mobileFormat(keybuf);
     HiddenInputHandler();
-  });
-  mobileInput.addEventListener('keyup', function (e) {});
+  }); // mobileInput.addEventListener('keyup', (e) => {
+  // });
+
   dropDownList.addEventListener('mouseleave', function () {
     dropDownList.style.display = 'none';
     HiddenInputHandler();

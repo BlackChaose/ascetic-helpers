@@ -172,8 +172,8 @@ const renderDropDownList = (obj,
           break;
         }
         const delPart = mobileInput.value;
-        const delPartRes = delPart.substring(0, e.target.selectionStart) + delPart.substring(e.target.selectionEnd, delPart.length);
-        const delPartsCnt = mobileClear(delPart.substring(e.target.selectionStart, e.target.selectionEnd)).length;
+        const delPartRes = delPart.substring(0, e.target.selectionStart) + delPart.substring(e.target.selectionEnd, delPart.length);// eslint-disable-line
+        const delPartsCnt = mobileClear(delPart.substring(e.target.selectionStart, e.target.selectionEnd)).length;// eslint-disable-line
         buffer.splice(indexes.buffer[e.target.selectionStart], delPartsCnt);
         mobileInput.value = mobileFormat(mobileClear(delPartRes));
         break;
@@ -194,21 +194,20 @@ const renderDropDownList = (obj,
           break;
         }
         const delPart = mobileInput.value;
-        const delPartRes = delPart.substring(0, e.target.selectionStart) + delPart.substring(e.target.selectionEnd, delPart.length);
-        const delPartsCnt = mobileClear(delPart.substring(e.target.selectionStart, e.target.selectionEnd)).length;
+        const delPartRes = delPart.substring(0, e.target.selectionStart) + delPart.substring(e.target.selectionEnd, delPart.length);// eslint-disable-line
+        const delPartsCnt = mobileClear(delPart.substring(e.target.selectionStart, e.target.selectionEnd)).length;// eslint-disable-line
         buffer.splice(indexes.buffer[e.target.selectionStart], delPartsCnt);
         mobileInput.value = mobileFormat(mobileClear(delPartRes));
         break;
       }
-      default: return buffer;
+      default: return buffer;// eslint-disable-line
     }
-    return buffer;
+    return buffer;// eslint-disable-line
   };
   const keybuf = inputMobileDefault.split('');
 
   // по умолчанию в буфер + обработка нажатий стрелок
   mobileInput.addEventListener('keydown', (e) => {
-
     // ArrowRight ArrowLeft ArrowUp ArrowDown Delete
     if (['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'].includes(e.key)) {
       return;
@@ -250,7 +249,7 @@ const renderDropDownList = (obj,
       }
       return;
     }
-    //fixme (add shift + key? use e.shiftKey https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/shiftKey
+    // fixme (add shift + key? use e.shiftKey https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/shiftKey
 
     e.preventDefault();
     mobileInput.value = '';
@@ -258,8 +257,8 @@ const renderDropDownList = (obj,
     mobileInput.value = mobileFormat(keybuf);
     HiddenInputHandler();
   });
-  mobileInput.addEventListener('keyup', (e) => {
-  });
+  // mobileInput.addEventListener('keyup', (e) => {
+  // });
 
   dropDownList.addEventListener('mouseleave', () => {
     dropDownList.style.display = 'none';
@@ -298,7 +297,6 @@ const formatCodes = (arr) => {
 };
 
 const renderMobileInput = (config) => {
-
   sendRequest(config.url)
     .then((MobileCodes) => {
       const SortedMobileCodes = formatCodes(MobileCodes);
@@ -311,7 +309,7 @@ const renderMobileInput = (config) => {
         config.hiddenInputName,
         config.borderStyle,
       );
-    })
+    });
 
   return 0;
 };
