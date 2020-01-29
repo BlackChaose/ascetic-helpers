@@ -206,13 +206,9 @@ const renderDropDownList = (obj,
   };
   const keybuf = inputMobileDefault.split('');
 
-  console.warn('inputMobileDefault.split: ', keybuf);
-
   // по умолчанию в буфер + обработка нажатий стрелок
-  mobileInput.addEventListener('change', (e) => { console.log(e.key); });
-
   mobileInput.addEventListener('keydown', (e) => {
-    console.log('keydown!: ', e.key);
+
     // ArrowRight ArrowLeft ArrowUp ArrowDown Delete
     if (['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'].includes(e.key)) {
       return;
@@ -231,14 +227,10 @@ const renderDropDownList = (obj,
 
     if (e.key === 'Backspace') {
       delSelection(e, keybuf);
-      selectionStart = null;
-      selectionEnd = null;
       return;
     }
     if (e.key === 'Delete') {
       delSelection(e, keybuf);
-      selectionStart = null;
-      selectionEnd = null;
       return;
     }
     if (e.key === 'ArrowLeft') {
@@ -247,7 +239,7 @@ const renderDropDownList = (obj,
         e.target.selectionStart -= 1;
         e.target.selectionEnd -= 1;
       }
-      console.log(e.target.selectionStart, e.target.selectionEnd);
+
       return;
     }
 
@@ -267,8 +259,6 @@ const renderDropDownList = (obj,
     HiddenInputHandler();
   });
   mobileInput.addEventListener('keyup', (e) => {
-    console.log('keyup: Caret at: ', e.target.selectionStart);
-    console.log('keyup: ', e.key);
   });
 
   dropDownList.addEventListener('mouseleave', () => {
@@ -308,7 +298,7 @@ const formatCodes = (arr) => {
 };
 
 const renderMobileInput = (config) => {
-  console.log('debug p2!');
+
   sendRequest(config.url)
     .then((MobileCodes) => {
       const SortedMobileCodes = formatCodes(MobileCodes);
@@ -322,7 +312,7 @@ const renderMobileInput = (config) => {
         config.borderStyle,
       );
     })
-    .catch((error) => console.log(error));
+
   return 0;
 };
 

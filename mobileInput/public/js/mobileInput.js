@@ -254,15 +254,10 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
     return buffer;
   };
 
-  var keybuf = inputMobileDefault.split('');
-  console.warn('inputMobileDefault.split: ', keybuf); // по умолчанию в буфер + обработка нажатий стрелок
+  var keybuf = inputMobileDefault.split(''); // по умолчанию в буфер + обработка нажатий стрелок
 
-  mobileInput.addEventListener('change', function (e) {
-    console.log(e.key);
-  });
   mobileInput.addEventListener('keydown', function (e) {
-    console.log('keydown!: ', e.key); // ArrowRight ArrowLeft ArrowUp ArrowDown Delete
-
+    // ArrowRight ArrowLeft ArrowUp ArrowDown Delete
     if (['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'].includes(e.key)) {
       return;
     }
@@ -282,15 +277,11 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
 
     if (e.key === 'Backspace') {
       delSelection(e, keybuf);
-      selectionStart = null;
-      selectionEnd = null;
       return;
     }
 
     if (e.key === 'Delete') {
       delSelection(e, keybuf);
-      selectionStart = null;
-      selectionEnd = null;
       return;
     }
 
@@ -302,7 +293,6 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
         e.target.selectionEnd -= 1;
       }
 
-      console.log(e.target.selectionStart, e.target.selectionEnd);
       return;
     }
 
@@ -323,10 +313,7 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
     mobileInput.value = mobileFormat(keybuf);
     HiddenInputHandler();
   });
-  mobileInput.addEventListener('keyup', function (e) {
-    console.log('keyup: Caret at: ', e.target.selectionStart);
-    console.log('keyup: ', e.key);
-  });
+  mobileInput.addEventListener('keyup', function (e) {});
   dropDownList.addEventListener('mouseleave', function () {
     dropDownList.style.display = 'none';
     HiddenInputHandler();
@@ -364,13 +351,10 @@ var formatCodes = function formatCodes(arr) {
 };
 
 var renderMobileInput = function renderMobileInput(config) {
-  console.log('debug p2!');
   sendRequest(config.url).then(function (MobileCodes) {
     var SortedMobileCodes = formatCodes(MobileCodes);
     renderLabel(config.domObject);
     renderDropDownList(config.domObject, SortedMobileCodes, config.defaultMobile, config.defaultCountryCode, config.hiddenInputName, config.borderStyle);
-  }).catch(function (error) {
-    return console.log(error);
   });
   return 0;
 };
