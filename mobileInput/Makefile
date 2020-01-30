@@ -38,3 +38,6 @@ asm_watch_babel:
 asm_watchify:
 	#watchify ./dist/index.js -o 'uglifyjs -cm > ./public/js/mobileInput.js'
 	watchify ./dist/index.js -o './public/js/mobileInput.js'
+
+asm_watch_css:
+	watchify ./assets/mobileInput.css -o './public/css/mobileInput.css'
