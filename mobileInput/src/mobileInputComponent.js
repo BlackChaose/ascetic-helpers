@@ -58,6 +58,9 @@ const renderDropDownList = (obj,
   const dropDownList = document.createElement('div'); // eslint-disable-line
   const dropDownHiddenInput = document.createElement('input'); // eslint-disable-line
   const dropDownArrow = document.createElement('div'); // eslint-disable-line
+  const spanWrapForMobileInput = document.createElement('span'); // eslint-disable-line
+
+  spanWrapForMobileInput.className = 'mobile_input--dropdown-wrapper';
 
   dropDownList.className = 'mobile_input--dropdown-list';
   dropDownHeader.className = 'mobile_input--dropdown-header';
@@ -127,7 +130,8 @@ const renderDropDownList = (obj,
 
   dropDownHeader.appendChild(dropDownArrow);
 
-  obj.appendChild(mobileInput);
+  spanWrapForMobileInput.appendChild(mobileInput);
+  obj.appendChild(spanWrapForMobileInput);
 
   obj.appendChild(dropDownList);
 

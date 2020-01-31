@@ -69,6 +69,9 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
 
   var dropDownArrow = document.createElement('div'); // eslint-disable-line
 
+  var spanWrapForMobileInput = document.createElement('span'); // eslint-disable-line
+
+  spanWrapForMobileInput.className = 'mobile_input--dropdown-wrapper';
   dropDownList.className = 'mobile_input--dropdown-list';
   dropDownHeader.className = 'mobile_input--dropdown-header';
 
@@ -130,7 +133,8 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
   mobileInput.autocomplete = 'off';
   obj.appendChild(dropDownHeader);
   dropDownHeader.appendChild(dropDownArrow);
-  obj.appendChild(mobileInput);
+  spanWrapForMobileInput.appendChild(mobileInput);
+  obj.appendChild(spanWrapForMobileInput);
   obj.appendChild(dropDownList);
   dropDownHiddenInput.value = mobileFormat(inputMobileDefault);
   obj.appendChild(dropDownHiddenInput);

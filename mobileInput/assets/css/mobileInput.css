@@ -5,6 +5,7 @@
     padding: 0px;
 }
 .mobile_input--dropdown-header {
+    display: inline-block;
     width: 60px;
 }
 /*.mobile_input--dropdown-header::after{*/
@@ -19,12 +20,16 @@
     display: inline-block;
     position: absolute;
     max-width: 16px;
-    max-height: 12px;
+    max-height: 10px;
     color: black;
-    font-size: small;
+    border-top: 1px solid grey;
+    border-left: 1px solid grey;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    font-size: 8px;
     content: '▼';
-    margin-left: -19px;
-    margin-top: 3px;
+    margin-left: 0px;
+    margin-top: 2px;
     padding: 2px;
     background-color: lightgrey;
     cursor: pointer;
@@ -34,11 +39,11 @@
     display: inline-block;
     width: 60px;
     height: 15px;
-    border: 1px solid rgb(198, 198, 198);
+    /*border: 1px solid rgb(198, 198, 198);*/
     caret-color: transparent;
     cursor: pointer;
     padding-left: 10px;
-    padding-top: 2px;
+    padding-top: 1px;
     padding-bottom: 2px;
     background-color: lightgrey;
     border-radius: 1px;
@@ -52,13 +57,19 @@
     cursor: default;
     border-left: 1px solid tomato;
     border-top: 1px solid tomato;
+    /*border-top: none;*/
     border-bottom: 1px solid tomato;
     border-right: none;
     border-radius: 2px;
     padding-left: 10px;
-    padding-top: 2px;
+    padding-top: 1px;
     padding-bottom: 2px;
     background-color: lightgrey;
+}
+.mobile_input--dropdown-wrapper {
+    display: inline-block;
+    width: 60px;
+    height: 15px;
 }
 .mobile_input--dropdown-ul {
     position: absolute;
@@ -154,7 +165,7 @@
     border-radius: 2px;
     margin-bottom: 2px;
     margin-top: 1px;
-    padding: 2px 3px 2px 10px;
+    padding: 2px 2px 1px 10px;
     text-align: start;
     font-family: Arial Helvetica sans-serif;
     font-size: 12px;
@@ -179,8 +190,7 @@
     border-spacing: 1px 1px;
     border-radius: 2px;
     margin-bottom: 2px;
-    margin-top: 1px;
-    padding: 2px 3px 2px 10px;
+    padding: 2px 2px 1px 10px;
     text-align: start;
     font-family: Arial Helvetica sans-serif;
     font-size: 12px;
