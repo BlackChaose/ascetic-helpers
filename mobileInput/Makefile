@@ -32,6 +32,14 @@ asm:
 	composer update
 	composer dumpauto
 
+asmf:
+	npx eslint .
+	npm run build
+	browserify -e ./dist/index.js | uglifyjs > ./dist/bundle.js
+	cp -Rv --remove-destination ./assets/* ./public
+	cp -Rv --remove-destination ./dist/bundle.js ./public/js/mobileInput.js
+	cp -Rv --remove-destination ./engine/* ./public
+
 asm_watch_babel:
 	npm run build_watch
 

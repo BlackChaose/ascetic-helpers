@@ -71,7 +71,7 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
 
   var spanWrapForMobileInput = document.createElement('span'); // eslint-disable-line
 
-  spanWrapForMobileInput.className = 'mobile_input--dropdown-wrapper';
+  spanWrapForMobileInput.className = 'mobile_input--mobile-wrapper';
   dropDownList.className = 'mobile_input--dropdown-list';
   dropDownHeader.className = 'mobile_input--dropdown-header';
 
