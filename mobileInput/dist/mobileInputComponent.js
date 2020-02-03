@@ -58,7 +58,13 @@ var mobileClear = function mobileClear(str) {
   return str.match(/\d/g);
 };
 
-var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobileDefault, inputCountryCodeDefault, hiddenInputName, borderStyle) {
+var renderDropDownList = function renderDropDownList(obj, // eslint-disable-line
+SortedFlags, // eslint-disable-line
+inputMobileDefault, // eslint-disable-line
+inputCountryCodeDefault, // eslint-disable-line
+hiddenInputName, // eslint-disable-line
+borderStyle) {
+  // eslint-disable-line
   var dropDownHeader = document.createElement('span'); // eslint-disable-line
 
   var dropDownInput = document.createElement('input'); // eslint-disable-line
@@ -237,6 +243,38 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
     return buffer; // eslint-disable-line
   };
 
+  var insSymbol = function insSymbol(e, buffer) {
+    var currentCaret = e.target.selectionStart;
+    console.log('buffer: ', buffer, ' currentCarrett => ', currentCaret);
+    var indexes = {
+      caret: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      buf: [0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9]
+    };
+    var curPos = indexes.buf[currentCaret];
+
+    if (curPos < buffer.length) {
+      console.log('buffer: ', buffer, ' currentPos => ', curPos);
+      var part1 = buffer.slice(0, curPos);
+      console.warn(buffer);
+      var part2 = buffer.slice(curPos, buffer.length);
+      part1.push(e.key);
+      var res = part1.concat(part2);
+      buffer.splice(0, buffer.length);
+      res.map(function (el) {
+        buffer.push(el);
+        return el;
+      });
+      console.log('part1: ', part1, 'part2', part2, 'res ', buffer);
+    } else {
+      buffer.push(e.key);
+      return currentCaret + 1;
+    } // fixme
+    // fixme
+
+
+    return curPos + 1;
+  };
+
   var keybuf = inputMobileDefault.split(''); // по умолчанию в буфер + обработка нажатий стрелок
 
   mobileInput.addEventListener('keydown', function (e) {
@@ -291,9 +329,10 @@ var renderDropDownList = function renderDropDownList(obj, SortedFlags, inputMobi
 
 
     e.preventDefault();
-    mobileInput.value = '';
-    keybuf.push(e.key);
-    mobileInput.value = mobileFormat(keybuf);
+    var cursorPosition = insSymbol(e, keybuf);
+    mobileInput.value = mobileFormat(keybuf); // fixme!
+
+    mobileInput.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
     HiddenInputHandler();
   }); // mobileInput.addEventListener('keyup', (e) => {
   // });

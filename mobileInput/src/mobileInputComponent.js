@@ -47,12 +47,12 @@ const mobileFormat = (arr) => {
 
 const mobileClear = (str) => str.match(/\d/g);
 
-const renderDropDownList = (obj,
-  SortedFlags,
-  inputMobileDefault,
-  inputCountryCodeDefault,
-  hiddenInputName,
-  borderStyle) => {
+const renderDropDownList = (obj,  // eslint-disable-line
+                            SortedFlags, // eslint-disable-line
+                            inputMobileDefault, // eslint-disable-line
+                            inputCountryCodeDefault, // eslint-disable-line
+                            hiddenInputName, // eslint-disable-line
+                            borderStyle) => { // eslint-disable-line
   const dropDownHeader = document.createElement('span'); // eslint-disable-line
   const dropDownInput = document.createElement('input'); // eslint-disable-line
   const dropDownList = document.createElement('div'); // eslint-disable-line
@@ -204,10 +204,37 @@ const renderDropDownList = (obj,
         mobileInput.value = mobileFormat(mobileClear(delPartRes));
         break;
       }
-      default: return buffer;// eslint-disable-line
+      default:
+        return buffer;// eslint-disable-line
     }
     return buffer;// eslint-disable-line
   };
+  const insSymbol = (e, buffer) => {
+    const currentCaret = e.target.selectionStart;
+    console.log('buffer: ', buffer, ' currentCarrett => ', currentCaret);
+    const indexes = {
+      caret: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      buf: [0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9],
+    };
+    const curPos = indexes.buf[currentCaret];
+    if (curPos < buffer.length) {
+      console.log('buffer: ', buffer, ' currentPos => ', curPos);
+      const part1 = buffer.slice(0, curPos);
+      console.warn(buffer);
+      const part2 = buffer.slice(curPos, buffer.length);
+      part1.push(e.key);
+      const res = part1.concat(part2);
+      buffer.splice(0, buffer.length);
+      res.map((el) => {
+        buffer.push(el);
+        return el;
+      });
+      console.log('part1: ', part1, 'part2', part2, 'res ', buffer);
+    } else { buffer.push(e.key); return currentCaret + 1; } // fixme
+    // fixme
+    return curPos + 1;
+  };
+
   const keybuf = inputMobileDefault.split('');
 
   // по умолчанию в буфер + обработка нажатий стрелок
@@ -226,7 +253,6 @@ const renderDropDownList = (obj,
       e.preventDefault();
       return;
     }
-
 
     if (e.key === 'Backspace') {
       delSelection(e, keybuf);
@@ -256,9 +282,11 @@ const renderDropDownList = (obj,
     // fixme (add shift + key? use e.shiftKey https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/shiftKey
 
     e.preventDefault();
-    mobileInput.value = '';
-    keybuf.push(e.key);
+    const cursorPosition = insSymbol(e, keybuf);
+
     mobileInput.value = mobileFormat(keybuf);
+    // fixme!
+    mobileInput.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
     HiddenInputHandler();
   });
   // mobileInput.addEventListener('keyup', (e) => {
