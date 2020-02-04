@@ -8,6 +8,7 @@
     display: inline-block;
     position: relative;
     width: 60px;
+    background-color: rgb(198, 198, 198);
 }
 /*.mobile_input--dropdown-header::after{*/
     /*display: block;*/
@@ -25,14 +26,11 @@
     max-width: 16px;
     max-height: 10px;
     color: black;
-    border-top: 1px solid grey;
-    border-left: 1px solid grey;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
+    border: 1px solid rgb(198, 198, 198);
     font-size: 8px;
     content: '▼';
     padding: 2px;
-    background-color: lightgrey;
+    background-color: rgb(198, 198, 198);
     cursor: pointer;
     z-index: 999;
 }
@@ -41,14 +39,14 @@
     width: 60px;
     height: 15px;
     margin-left: 0px;
-    /*border: 1px solid rgb(198, 198, 198);*/
+    border: 1px solid rgb(198, 198, 198);
     caret-color: transparent;
     cursor: pointer;
     padding-left: 10px;
     padding-top: 1px;
     padding-bottom: 2px;
-    background-color: lightgrey;
-    border-radius: 1px;
+    background-color: rgb(198, 198, 198);
+    border-radius: 2px;
     border-right: none;
 }
 .mobile_input--dropdown-input-red {
@@ -67,7 +65,7 @@
     padding-left: 10px;
     padding-top: 1px;
     padding-bottom: 2px;
-    background-color: lightgrey;
+    background-color: rgb(198, 198, 198);
 }
 .mobile_input--mobile-wrapper {
     display: inline-block;
