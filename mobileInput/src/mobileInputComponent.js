@@ -25,8 +25,9 @@ const sendRequest = (url) => {
 
 const renderLabel = (obj) => {
   const labelInput = document.createElement('label'); // eslint-disable-line
+  labelInput.className = 'label_for--dropdown_input';
   labelInput.for = obj.getElementsByTagName('input').id;
-  labelInput.textContent = ' +';
+  labelInput.textContent = '+';
   obj.appendChild(labelInput);
   return obj;
 };

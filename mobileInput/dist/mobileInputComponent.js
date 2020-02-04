@@ -32,8 +32,9 @@ var sendRequest = function sendRequest(url) {
 var renderLabel = function renderLabel(obj) {
   var labelInput = document.createElement('label'); // eslint-disable-line
 
+  labelInput.className = 'label_for--dropdown_input';
   labelInput.for = obj.getElementsByTagName('input').id;
-  labelInput.textContent = ' +';
+  labelInput.textContent = '+';
   obj.appendChild(labelInput);
   return obj;
 };
