@@ -158,6 +158,7 @@ const renderDropDownList = (obj,  // eslint-disable-line
       caret: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       digits: [0, 1, 2, null, 4, 5, 6, null, 8, 9, 10, 11, null],
       buffer: [0, 1, 2, null, 3, 4, 5, null, 6, 7, 8, 9, null],
+      index: [0, 1, 2, 4, 4, 5, 6, 8, 8, 9, 10, 11, 12],
     };
     switch (e.key) {
       case 'Backspace': {
@@ -211,16 +212,14 @@ const renderDropDownList = (obj,  // eslint-disable-line
   };
   const insSymbol = (e, buffer) => {
     const currentCaret = e.target.selectionStart;
-    console.log('buffer: ', buffer, ' currentCarrett => ', currentCaret);
     const indexes = {
       caret: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
       buf: [0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9],
+      index: [0, 1, 2, 4, 4, 5, 6, 8, 8, 9, 10, 11],
     };
     const curPos = indexes.buf[currentCaret];
     if (curPos < buffer.length) {
-      console.log('buffer: ', buffer, ' currentPos => ', curPos);
       const part1 = buffer.slice(0, curPos);
-      console.warn(buffer);
       const part2 = buffer.slice(curPos, buffer.length);
       part1.push(e.key);
       const res = part1.concat(part2);
@@ -229,10 +228,10 @@ const renderDropDownList = (obj,  // eslint-disable-line
         buffer.push(el);
         return el;
       });
-      console.log('part1: ', part1, 'part2', part2, 'res ', buffer);
-    } else { buffer.push(e.key); return currentCaret + 1; } // fixme
-    // fixme
-    return curPos + 1;
+    } else {
+      buffer.push(e.key);
+    }
+    return indexes.index[currentCaret] + 1;
   };
 
   const keybuf = inputMobileDefault.split('');
@@ -268,7 +267,6 @@ const renderDropDownList = (obj,  // eslint-disable-line
         e.target.selectionStart -= 1;
         e.target.selectionEnd -= 1;
       }
-
       return;
     }
 
@@ -279,14 +277,18 @@ const renderDropDownList = (obj,  // eslint-disable-line
       }
       return;
     }
+
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      return;
+    }
     // fixme (add shift + key? use e.shiftKey https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/shiftKey
 
     e.preventDefault();
     const cursorPosition = insSymbol(e, keybuf);
 
     mobileInput.value = mobileFormat(keybuf);
-    // fixme!
-    mobileInput.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+    mobileInput.setSelectionRange(cursorPosition, cursorPosition);
     HiddenInputHandler();
   });
   // mobileInput.addEventListener('keyup', (e) => {

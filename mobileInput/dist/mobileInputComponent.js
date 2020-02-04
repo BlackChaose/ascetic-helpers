@@ -163,7 +163,8 @@ borderStyle) {
     var indexes = {
       caret: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       digits: [0, 1, 2, null, 4, 5, 6, null, 8, 9, 10, 11, null],
-      buffer: [0, 1, 2, null, 3, 4, 5, null, 6, 7, 8, 9, null]
+      buffer: [0, 1, 2, null, 3, 4, 5, null, 6, 7, 8, 9, null],
+      index: [0, 1, 2, 4, 4, 5, 6, 8, 8, 9, 10, 11, 12]
     };
 
     switch (e.key) {
@@ -245,17 +246,15 @@ borderStyle) {
 
   var insSymbol = function insSymbol(e, buffer) {
     var currentCaret = e.target.selectionStart;
-    console.log('buffer: ', buffer, ' currentCarrett => ', currentCaret);
     var indexes = {
       caret: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-      buf: [0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9]
+      buf: [0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9],
+      index: [0, 1, 2, 4, 4, 5, 6, 8, 8, 9, 10, 11]
     };
     var curPos = indexes.buf[currentCaret];
 
     if (curPos < buffer.length) {
-      console.log('buffer: ', buffer, ' currentPos => ', curPos);
       var part1 = buffer.slice(0, curPos);
-      console.warn(buffer);
       var part2 = buffer.slice(curPos, buffer.length);
       part1.push(e.key);
       var res = part1.concat(part2);
@@ -264,15 +263,11 @@ borderStyle) {
         buffer.push(el);
         return el;
       });
-      console.log('part1: ', part1, 'part2', part2, 'res ', buffer);
     } else {
       buffer.push(e.key);
-      return currentCaret + 1;
-    } // fixme
-    // fixme
+    }
 
-
-    return curPos + 1;
+    return indexes.index[currentCaret] + 1;
   };
 
   var keybuf = inputMobileDefault.split(''); // по умолчанию в буфер + обработка нажатий стрелок
@@ -325,14 +320,18 @@ borderStyle) {
       }
 
       return;
+    }
+
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      return;
     } // fixme (add shift + key? use e.shiftKey https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/shiftKey
 
 
     e.preventDefault();
     var cursorPosition = insSymbol(e, keybuf);
-    mobileInput.value = mobileFormat(keybuf); // fixme!
-
-    mobileInput.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+    mobileInput.value = mobileFormat(keybuf);
+    mobileInput.setSelectionRange(cursorPosition, cursorPosition);
     HiddenInputHandler();
   }); // mobileInput.addEventListener('keyup', (e) => {
   // });
