@@ -355,6 +355,15 @@ borderStyle) {
     dropDownList.style.display = 'none';
     HiddenInputHandler();
   });
+  obj.addEventListener('reset', function (e) {
+    // e.preventDefault();
+    console.log('====> ', mobileInput.value, 'e.target ', e.target);
+    var a = document.querySelectorAll('input[class="mobile_input--mobile-input-red"]'); // eslint-disable-line
+
+    console.log('a:: ', a[0]); // a[0].nodeValue = mobileFormat(inputMobileDefault);
+
+    a[0].value = '555';
+  }, true);
   return obj;
 };
 

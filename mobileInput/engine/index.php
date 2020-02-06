@@ -104,8 +104,8 @@ function parse_and_save(){
 <hr>
 <div style="height: 5em; width: 100%; background-color: black;">###</div>
 <!--<form id="appInput" data-mobile-code="7" data-mobile-val="9998881010">-->
-<form id="appInput" data-mobile-code="7" data-mobile-val="" data-border-style="red">
-
+<form id="appInput" data-mobile-code="7" data-mobile-val="1234567891" data-border-style="red">
+    <input type="reset" value="RESET">
 </form>
 <div>###</div>
 <script type="text/javascript" src="js/mobileInput.js?t = <?=filemtime($_SERVER['DOCUMENT_ROOT'].'/js/mobileInput.js')?>"></script>

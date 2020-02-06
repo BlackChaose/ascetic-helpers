@@ -15,4 +15,5 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMobileInput(config);
   }
 });
+
 /* eslint-enable */
