@@ -104,26 +104,12 @@ function parse_and_save(){
 <hr>
 <div style="height: 5em; width: 100%; background-color: black;">###</div>
 <!--<form id="appInput" data-mobile-code="7" data-mobile-val="9998881010">-->
-<form id="appInput" data-mobile-code="7" data-mobile-val="1234567891" data-border-style="red">
+<form>
+    <div id="appInput" data-mobile-code="7" data-mobile-val="1234567891" data-border-style="red"></div>
     <input type="reset" value="RESET">
 </form>
+
 <div>###</div>
-<form id="test2">
-    <input id="tsti1" value = '123test123'> <br>
-    <input type="reset" value="RESET">
-</form>
-<script>
-    var a = document.getElementById('test2');
-    a.addEventListener('reset', (e) => {
-      console.log(e.target);
-      e.currentTarget.childNodes[1].value = '}|{0n@';
-      console.log('}|{0n@ ', e.currentTarget.childNodes);
-    });
-    a.addEventListener('change', (e) => {
-      console.warn(e.currentTarget.childNodes[1].value, typeof(e.currentTarget));
-      console.error('-----------------------');
-    });
-</script>
 <script type="text/javascript" src="js/mobileInput.js?t = <?=filemtime($_SERVER['DOCUMENT_ROOT'].'/js/mobileInput.js')?>"></script>
 </body>
 </html>

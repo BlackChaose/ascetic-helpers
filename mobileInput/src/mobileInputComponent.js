@@ -76,7 +76,7 @@ const renderDropDownList = (obj,  // eslint-disable-line
   dropDownInput.placeholder = 'код';
   dropDownInput.maxLength = 4;
   dropDownInput.value = inputCountryCodeDefault;
-
+  dropDownInput.setAttribute('value', inputCountryCodeDefault);
   dropDownHiddenInput.type = 'hidden';
   dropDownHiddenInput.name = hiddenInputName || 'mobileInput_Mobile';
 
