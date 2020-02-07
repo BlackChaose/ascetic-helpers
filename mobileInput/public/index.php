@@ -108,6 +108,22 @@ function parse_and_save(){
     <input type="reset" value="RESET">
 </form>
 <div>###</div>
+<form id="test2">
+    <input id="tsti1" value = '123test123'> <br>
+    <input type="reset" value="RESET">
+</form>
+<script>
+    var a = document.getElementById('test2');
+    a.addEventListener('reset', (e) => {
+      console.log(e.target);
+      e.currentTarget.childNodes[1].value = '}|{0n@';
+      console.log('}|{0n@ ', e.currentTarget.childNodes);
+    });
+    a.addEventListener('change', (e) => {
+      console.warn(e.currentTarget.childNodes[1].value, typeof(e.currentTarget));
+      console.error('-----------------------');
+    });
+</script>
 <script type="text/javascript" src="js/mobileInput.js?t = <?=filemtime($_SERVER['DOCUMENT_ROOT'].'/js/mobileInput.js')?>"></script>
 </body>
 </html>

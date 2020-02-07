@@ -136,6 +136,7 @@ borderStyle) {
   mobileInput.type = 'tel';
   mobileInput.required = true;
   mobileInput.value = mobileFormat(inputMobileDefault);
+  mobileInput.setAttribute('value', mobileFormat(inputMobileDefault));
   mobileInput.name = 'mobile_number';
   mobileInput.autocomplete = 'off';
   obj.appendChild(dropDownHeader);
@@ -355,6 +356,10 @@ borderStyle) {
     dropDownList.style.display = 'none';
     HiddenInputHandler();
   });
+  mobileInput.addEventListener('change', function (e) {
+    console.log('changed! ', e.target.value);
+  }, true); // fixme! debug::: - not work rerender after reset!
+
   obj.addEventListener('reset', function (e) {
     // e.preventDefault();
     console.log('====> ', mobileInput.value, 'e.target ', e.target);
